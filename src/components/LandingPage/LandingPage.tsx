@@ -9,32 +9,70 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
 
         this.state = {
             showBoroughSelect: false,
+            selectedSearchMethod: null,
         };
     }
 
     toggleBoroughs() {
-        this.setState({ showBoroughSelect: !this.state.showBoroughSelect });
+        this.setState(
+            {
+                ...this.state,
+                showBoroughSelect: !this.state.showBoroughSelect,
+            });
+    }
+
+    setSelectedSearchMethod(method: string) {
+        this.setState({ ...this.state, selectedSearchMethod: method});
     }
 
     render() {
-        const boroughList = config.boroughNames.map((borough)=> {
-            return <option value={borough}>{borough}</option>
+        const boroughList = config.boroughNames.map((borough, index)=> {
+            return <option value={borough} key={`borough-select-${index}`}>{borough}</option>
         });
 
-        const boroughSelectClasses = 'LandingPage_select' + (this.state.showBoroughSelect ? ' show' : ' hide');
+        const boroughSelectClasses = 'LandingPage_select' + (this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod === 'borough' ? ' show' : ' hide');
+        const nameSelectClasses = 'LandingPage_select' + (this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod === 'name' ? ' show' : ' hide');
         return(
             <div className="LandingPage">
                 <div className="LandingPage_findBy">
                     <label>
                         Find Restaurants by Borough:
-                        <input type="radio" name="search-method" value="borough" onClick={() => {this.toggleBoroughs()}}/>
+                        <input
+                            
+                            type="radio"
+                            name="search-method"
+                            value="borough"
+                            onClick={() => {this.setSelectedSearchMethod('borough')}}
+                        />
                     </label>
                     <div className={boroughSelectClasses}>
                         <label>
                             Select Borough:
-                            <select name="select-borough">
+                            <select
+                                disabled={this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod !== 'borough'}
+                                name="select-borough"
+                            >
                                 {boroughList}
                             </select>
+                        </label>
+                    </div>
+                </div>
+
+                <div className="LandingPage_findBy">
+                    <label>
+                        Find Restaurants by Name:
+                        <input
+                            
+                            type="radio"
+                            name="search-method"
+                            value="name"
+                            onClick={() => {this.setSelectedSearchMethod('name')}}
+                        />
+                    </label>
+                    <div className={nameSelectClasses}>
+                        <label>
+                            Enter Restaurant Name:
+                            <input type="text" value="name"></input>
                         </label>
                     </div>
                 </div>
