@@ -1,4 +1,30 @@
 .SearchInput {
-    margin-bottom: 25px;
-    border-bottom: 1px dashed gray;
+    padding: 50px;
+    border: 1px solid gray;
+    margin-bottom: 15px;
+}
+
+.SearchInput_label {
+    margin-bottom: 15px;
+}
+
+.SearchInput_input {
+    
+}
+
+.input_wrapper {
+    span {
+        display: inline-block;
+        width: 15%;
+    }
+    .SearchInput_input-content {
+        display: inline-block;
+        width: 60%;
+         & > input, & > select, & > textarea {
+             width: 100%;
+             padding: 10px 0;
+             border-radius: 10px;
+             border: 1px solid gray;
+         }
+    }
 }

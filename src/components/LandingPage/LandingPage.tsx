@@ -26,17 +26,31 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         this.setState({ ...this.state, selectedSearchMethod: method});
     }
 
+    setDisplayClassName(searchMethod: string): string {
+        const classNames = this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod === searchMethod ? 'show' : 'hide';
+        return classNames;
+    }
+
     render() {
         const boroughList = config.boroughNames.map((borough, index)=> {
             return <option value={borough} key={`borough-select-${index}`}>{borough}</option>
         });
 
-        const boroughSelectClasses = 'LandingPage_select' + (this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod === 'borough' ? ' show' : ' hide');
-        const nameSelectClasses = 'LandingPage_select' + (this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod === 'name' ? ' show' : ' hide');
+        const gradesList = config.avgGrades.map((grade, index) => {
+            return <option value={grade} key={`grade-select-${index}`}>{grade}</option>
+        });
+
+        const cuisineTypeList = ['Burgers'].map((type, index) => {
+            return <option value={type} key={`cuisine-select-${index}`}>{type}</option>
+        })
+
+        const boroughSelectClasses = this.setDisplayClassName('borough');
+        const nameSelectClasses = this.setDisplayClassName('name');
+        const ratingSelectClasses = this.setDisplayClassName('avg_rating');
+        const cuisineSelectClasses = this.setDisplayClassName('cuisine_type');
         
         const boroughInputChildren = (
             <select
-                disabled={this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod !== 'borough'}
                 name="select-borough"
                 onChange={(e) => {console.log(e.target.value)}}
             >
@@ -51,29 +65,72 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
             />
         );
 
+        const gradeInputChildren = (
+            <select 
+                name="select-avg-grade"
+                onChange={(e) => {console.log(e.target.value)}}
+            >
+                {gradesList}
+            </select>
+        );
+
+        const cuisineInputChildren = (
+            <select
+                name="select-cuisine-type"
+                onChange={(e) => {console.log(e.target.value)}}
+            >
+                    {cuisineTypeList}
+                </select>
+        )
         return(
             <div className="LandingPage">
-                <SearchInput
-                    name="search-method"
-                    value="borough"
-                    onClick={() => {this.setSelectedSearchMethod('borough')}}
-                    inputClasses={boroughSelectClasses}
-                    children={boroughInputChildren}
-                    labelText="Borough"
-                    description="Find Restaurants by Borough:"
-                />
+                <div className="LandingPage_search">
+                    <SearchInput
+                        name="search-method"
+                        value="borough"
+                        onClick={() => {this.setSelectedSearchMethod('borough')}}
+                        inputClasses={boroughSelectClasses}
+                        children={boroughInputChildren}
+                        labelText="Borough"
+                        description="Find Restaurants by Borough:"
+                    />
 
-                <SearchInput
-                    name="search-method"
-                    value="name"
-                    onClick={() => {this.setSelectedSearchMethod('name')}}
-                    inputClasses={nameSelectClasses}
-                    children={nameInputChildren}
-                    labelText="Name"
-                    description="Find Restaurants by Name:"
-                />
+                    <SearchInput
+                        name="search-method"
+                        value="name"
+                        onClick={() => {this.setSelectedSearchMethod('name')}}
+                        inputClasses={nameSelectClasses}
+                        children={nameInputChildren}
+                        labelText="Name"
+                        description="Find Restaurants by Name:"
+                    />
+
+                    <SearchInput
+                        name="search-method"
+                        value="avg_rating"
+                        onClick={() => {this.setSelectedSearchMethod('avg_rating')}}
+                        inputClasses={ratingSelectClasses}
+                        children={gradeInputChildren}
+                        labelText="Average Rating"
+                        description="Find Restaurants by Average Rating:"
+                    />
+
+                    <SearchInput
+                        name="search-method"
+                        value="cuisine_type"
+                        onClick={() => {this.setSelectedSearchMethod('cuisine_type')}}
+                        inputClasses={cuisineSelectClasses}
+                        children={cuisineInputChildren}
+                        labelText="Cuisine Type"
+                        description="Find Restaurants by Cuisine Type:"
+                    />
+                </div>
+                <div className="LandingPage_search-controls">
+                    <button type="button">Find Restaurants!</button>
+                </div>
                 
-                <button>Find Restaurants!</button>
+                
+                {/* <button>Find Restaurants!</button> */}
             </div>
         );
     }
