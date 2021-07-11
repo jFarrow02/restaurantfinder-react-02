@@ -4,4 +4,6 @@ export default interface SearchInputInterface {
     name: string,
     inputClasses: string,
     value: string,
+    labelText: string,
+    description: string,
 };

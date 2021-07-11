@@ -8,22 +8,24 @@ const SearchInput = (props: SearchInputInterface) => {
         inputClasses,
         value,
         onClick,
+        labelText,
+        description,
     } = props;
 
     return(
         <div className="SearchInput">
             <label>
-                Find Restaurants by Borough:
+                {description}
                 <input
                     type="radio"
                     name={name}
                     value={value}
-                    onClick={() => {onClick(value)}}
+                    onClick={() => {onClick()}}
                 />
             </label>
             <div className={inputClasses}>
                 <label>
-                    Select Borough:
+                    {labelText}
                     {children}
                 </label>
             </div>
