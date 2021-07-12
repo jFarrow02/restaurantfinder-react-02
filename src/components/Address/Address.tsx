@@ -5,7 +5,7 @@ const Address = (props: AddressInterface) => {
 
     return(
         <div className="Address">
-            
+            Address goes here
         </div>
     )
 };

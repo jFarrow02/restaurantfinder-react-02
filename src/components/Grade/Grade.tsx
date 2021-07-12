@@ -5,7 +5,7 @@ const Grade = (props: GradeInterface) => {
 
     return(
         <div className="Grade">
-            
+            Grade goes here
         </div>
     )
 };

@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.scss';
 import LandingPage from './components/LandingPage/LandingPage';
+import RestaurantDetails from './components/RestaurantDetails/RestaurantDetails';
+import NotFound from './components/404NotFound/404NotFound';
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,11 +18,17 @@ class App extends React.Component<{}, {}> {
         <div className="App">
           <h1>NY RestaurantFinder</h1>
            <Switch>
-            <Route path="/">
+           <Route exact path="/">
               <LandingPage/>
             </Route>
-            <Route path="/search">
+           <Route path="/restaurant/:id">
+              <RestaurantDetails/>
+            </Route>
+           <Route path="/search">
               <LandingPage/>
+            </Route>
+            <Route path="*">
+              <NotFound/>
             </Route>
           </Switch>
         </div>

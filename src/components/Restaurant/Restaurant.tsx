@@ -14,9 +14,10 @@ const Restaurant = (props: RestaurantInterface) => {
         grades,
     } = props;
 
-    const gradesList = grades.map((grade) => {
-        <Grade grade={grade.grade} score={grade.score} date={grade.date}/>
-    })
+    const gradesList = grades.map((grade, index) => {
+        return <Grade key={`grade-${index}`} grade={grade.grade} score={grade.score} date={grade.date}/>
+    });
+
    return(
        <div className="Restaurant">
            <h2>{props.name}</h2>
