@@ -12,6 +12,7 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         this.state = {
             showBoroughSelect: false,
             selectedSearchMethod: null,
+            cuisineTypes: [],
         };
     }
 
@@ -33,10 +34,23 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
     }
 
     async componentDidMount() {
-        console.log('LandingPage mounted');
         const cuisineTypes = await CuisineService.getAllCuisineTypes();
-        console.log(cuisineTypes);
+        const sorted = [...cuisineTypes].sort((a, b) => {
+            if(a.cuisine_type < b.cuisine_type){
+                return -1;
+            }
+            if(a.cuisine_type > b.cuisine_type){
+                return 1;
+            }
+            return 0;
+        });
+
+        this.setState({
+            ...this.state,
+            cuisineTypes: sorted,
+        });
     }
+
     render() {
         const boroughList = config.boroughNames.map((borough, index)=> {
             return <option value={borough} key={`borough-select-${index}`}>{borough}</option>
@@ -46,8 +60,9 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
             return <option value={grade} key={`grade-select-${index}`}>{grade}</option>
         });
 
-        const cuisineTypeList = ['Burgers'].map((type, index) => {
-            return <option value={type} key={`cuisine-select-${index}`}>{type}</option>
+        const cuisineTypeList = this.state.cuisineTypes.map((type, index) => {
+            const { cuisine_type } = type;
+            return <option value={cuisine_type} key={`cuisine-select-${index}`}>{cuisine_type}</option>
         })
 
         const boroughSelectClasses = this.setDisplayClassName('borough');
