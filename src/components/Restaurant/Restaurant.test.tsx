@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import Restaurant from './Restaurant';
-import RestaurantInterface from './RestaurantInterface';
+import RestaurantInterface from '../../interfaces/RestaurantInterface';
 
 const mockProps: RestaurantInterface = {
 

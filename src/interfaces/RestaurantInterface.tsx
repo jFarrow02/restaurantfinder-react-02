@@ -1,5 +1,5 @@
-import AddressInterface from '../Address/AddressInterface';
-import GradeInterface from '../Grade/GradeInterface';
+import AddressInterface from '../interfaces/AddressInterface';
+import GradeInterface from '../interfaces/GradeInterface';
 
 export default interface RestaurantInterface {
     address: AddressInterface,

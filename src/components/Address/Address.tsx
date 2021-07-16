@@ -1,5 +1,5 @@
 import './Address.scss';
-import AddressInterface from './AddressInterface';
+import AddressInterface from '../../interfaces/AddressInterface';
 
 const Address = (props: AddressInterface) => {
 

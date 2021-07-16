@@ -1,8 +1,9 @@
 import React from 'react';
 import './LandingPage.scss';
-import { LandingPageInterface } from './LandingPageInterface';
+import { LandingPageInterface } from '../../interfaces/LandingPageInterface';
 import SearchInput from '../SearchInput/SearchInput';
 import config from '../../config/constants/landing-page';
+import CuisineService from '../../services/cuisine-types-service';
 
 export default class LandingPage extends React.Component<{}, LandingPageInterface> {
     constructor(props: any) {
@@ -31,6 +32,11 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         return classNames;
     }
 
+    async componentDidMount() {
+        console.log('LandingPage mounted');
+        const cuisineTypes = await CuisineService.getAllCuisineTypes();
+        console.log(cuisineTypes);
+    }
     render() {
         const boroughList = config.boroughNames.map((borough, index)=> {
             return <option value={borough} key={`borough-select-${index}`}>{borough}</option>

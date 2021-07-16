@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import Address from "./Address";
-import AddressInterface from './AddressInterface';
+import AddressInterface from '../../interfaces/AddressInterface';
 
 const mockProps: AddressInterface = {
     building: '1234',

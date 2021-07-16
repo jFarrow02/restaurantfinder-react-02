@@ -1,5 +1,5 @@
 import './Restaurant.scss';
-import RestaurantInterface from './RestaurantInterface';
+import RestaurantInterface from '../../interfaces/RestaurantInterface';
 import Address from '../Address/Address';
 import Grade from '../Grade/Grade';
 

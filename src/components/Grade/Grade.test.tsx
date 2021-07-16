@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import Grade from './Grade';
-import GradeInterface from './GradeInterface';
+import GradeInterface from '../../interfaces/GradeInterface';
 
 const mockProps: GradeInterface = {
     grade: 'X+',

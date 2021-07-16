@@ -1,5 +1,5 @@
 import './Grade.scss';
-import GradeInterface from './GradeInterface';
+import GradeInterface from '../../interfaces/GradeInterface';
 
 const Grade = (props: GradeInterface) => {
 
