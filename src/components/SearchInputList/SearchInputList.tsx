@@ -3,20 +3,19 @@ import './SearchInputList.scss';
 import SearchInput from '../SearchInput/SearchInput';
 import config from '../../config/constants/landing-page';
 import CuisineTypeInterface from '../../interfaces/CuisineInterface';
-import SearchInputInterface from '../../interfaces/SearchInputInterface';
 import SearchInputListInputInterface from '../../interfaces/SearchInputListInputInterface';
 
 interface SearchInputListPropsInterface {
     clickHandler: Function,
-    setSearchMethod: Function,
     inputs: SearchInputListInputInterface[],
+    cuisineTypes: CuisineTypeInterface[],
 }
 
 interface SearchInputListStateInterface {
     showBoroughSelect: boolean,
     selectedSearchMethod: string | null,
     searchValue: string | null,
-    cuisineTypes: CuisineTypeInterface[],
+    
     //restaurantList: RestaurantInterface[],
 };
 export default class SearchInputList extends React.Component<SearchInputListPropsInterface, SearchInputListStateInterface> {
@@ -28,9 +27,12 @@ export default class SearchInputList extends React.Component<SearchInputListProp
             showBoroughSelect: false,
             selectedSearchMethod: null,
             searchValue: null,
-            cuisineTypes: [],
             // restaurantList: [],
         };
+    }
+
+    setSearchMethod(method: string): void {
+        this.setState({...this.state, selectedSearchMethod: method, searchValue: this.getDefaultSearchValues(method)});
     }
 
     getDefaultSearchValues(searchMethod: string) {
@@ -47,7 +49,7 @@ export default class SearchInputList extends React.Component<SearchInputListProp
                 defaultValue = config.avgGrades[0];
                 break;
             case cuisineType:
-                defaultValue = this.state.cuisineTypes[0].cuisine_type;
+                defaultValue = this.props.cuisineTypes[0].cuisine_type;
                 break;
             default:
                 defaultValue = null;    
@@ -66,7 +68,7 @@ export default class SearchInputList extends React.Component<SearchInputListProp
                     key={`search-input-${index}`}
                     labelText={labelText}
                     name={name}
-                    onClick={() => {}}
+                    onClick={() => {this.setSearchMethod(value)}}
                     value={value}
                 >
                     {children}
