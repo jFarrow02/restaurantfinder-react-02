@@ -21,7 +21,14 @@ const config = {
         'D',
         'D-',
         'F'
-    ]
+    ],
+
+    searchMethods: [
+        'borough', 
+        'name', 
+        'avg_rating', 
+        'cuisine_type'
+    ],
 };
 
 export default config;

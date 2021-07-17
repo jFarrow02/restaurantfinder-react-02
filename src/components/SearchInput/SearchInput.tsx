@@ -1,4 +1,4 @@
-import SearchInputInterface from "./SearchInputInterface";
+import SearchInputInterface from "../../interfaces/SearchInputInterface";
 import './SearchInput.scss';
 
 const SearchInput = (props: SearchInputInterface) => {
