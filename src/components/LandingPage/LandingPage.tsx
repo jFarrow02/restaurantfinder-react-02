@@ -15,7 +15,7 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
 
         this.state = {
             showBoroughSelect: false,
-            selectedSearchValue: '',
+            selectedSearchValue: null,
             selectedSearchMethod: null,
             cuisineTypes: [],
             restaurantList: [],
@@ -23,15 +23,15 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         };
     }
 
-    setSelectedSearchValueAndMethod(searchValue: string, searchMethod: string): void {
-        this.setState({ ...this.state, selectedSearchValue: searchValue, selectedSearchMethod: searchMethod });
+    setSelectedSearchValue(searchValue: string): void {
+        this.setState({ ...this.state, selectedSearchValue: searchValue });
     }
 
-    setSearchMethod(searchMethod: string): void {
-        this.setState({...this.state, selectedSearchMethod: searchMethod });
+    setSelectedSearchMethod(searchMethod: string): void {
+        this.setState({...this.state, selectedSearchMethod: searchMethod, selectedSearchValue: this.getDefaultSearchValuesForMethod(searchMethod) });
     }
 
-    getDefaultSearchValues(searchMethod: string) {
+    getDefaultSearchValuesForMethod(searchMethod: string) {
         let defaultValue;
         const [borough, name, avgRating, cuisineType] = config.searchMethods;
         switch(searchMethod) {
@@ -131,8 +131,8 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         const boroughInputChildren = (
             <select
                 name="select-borough"
-                onChange={(e) => {this.setSelectedSearchValueAndMethod(e.target.value, borough)}}
-                // onChange={(e) => { this.setSelectedSearchValueAndMethod(e.target.value, borough).bind(this)}}
+                // onChange={(e) => {this.setSelectedSearchValue(e.target.value, borough)}}
+                onChange={(e) => {this.setSelectedSearchValue(e.target.value)}}
             >
                {boroughList}
             </select>
@@ -141,14 +141,16 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         const nameInputChildren = (
             <input 
                 type="text"
-                onChange={(e) => {this.setSelectedSearchValueAndMethod(e.target.value, name)}}
+                // onChange={(e) => {this.setSelectedSearchValue(e.target.value, name)}}
+                onChange={(e) => {this.setSelectedSearchValue(e.target.value)}}
             />
         );
 
         const gradeInputChildren = (
             <select 
                 name="select-avg-grade"
-                onChange={(e) => {this.setSelectedSearchValueAndMethod(e.target.value, avgRating)}}
+                // onChange={(e) => {this.setSelectedSearchValue(e.target.value, avgRating)}}
+                onChange={(e) => {this.setSelectedSearchValue(e.target.value)}}
             >
                 { gradesList}
             </select>
@@ -157,7 +159,8 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         const cuisineInputChildren = (
             <select
                 name="select-cuisine-type"
-                onChange={(e) => {this.setSelectedSearchValueAndMethod(e.target.value, cuisineType)}}
+                // onChange={(e) => {this.setSelectedSearchValue(e.target.value, cuisineType)}}
+                onChange={(e) => {this.setSelectedSearchValue(e.target.value)}}
             >
                 { cuisineTypeList }
             </select>
@@ -177,7 +180,7 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
                 inputs={searchInputConfig}
                 searchTerms={this.state.selectedSearchValue}
                 searchMethod={this.state.selectedSearchMethod}
-                onSearchMethodSelect={this.setSearchMethod.bind(this)}
+                onSearchMethodSelect={this.setSelectedSearchMethod.bind(this)}
             />
         );
 

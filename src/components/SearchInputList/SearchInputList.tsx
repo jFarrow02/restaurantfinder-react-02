@@ -9,36 +9,21 @@ interface SearchInputListPropsInterface {
     clickHandler: Function,
     inputs: SearchInputListInputInterface[],
     cuisineTypes: CuisineTypeInterface[],
-    searchTerms: string,
+    searchTerms: string | null,
     onSearchMethodSelect: Function,
     searchMethod: string | null,
 }
 
-interface SearchInputListStateInterface {
-    showBoroughSelect: boolean,
-    // selectedSearchMethod: string | null,
-    searchValue: string | null,
-};
-export default class SearchInputList extends React.Component<SearchInputListPropsInterface, SearchInputListStateInterface> {
+export default class SearchInputList extends React.Component<SearchInputListPropsInterface, {}> {
 
     constructor(props: SearchInputListPropsInterface) {
         super(props);
-
-        this.state = {
-            showBoroughSelect: false,
-            // selectedSearchMethod: null,
-            searchValue: null,
-        };
     }
 
     setDisplayClassName(searchMethod: string): string {
         const classNames = this.props.searchMethod !== null && this.props.searchMethod === searchMethod ? 'show' : 'hide';
         return classNames;
     }
-
-    // setSearchMethod(method: string): void {
-    //     this.setState({...this.state, selectedSearchMethod: method });
-    // }
 
     render() {
         const inputElements = this.props.inputs.map((inputObj, index) => {
@@ -69,7 +54,7 @@ export default class SearchInputList extends React.Component<SearchInputListProp
                 <div className="SearchInputList_search-controls">
                     <button
                         // disabled={!this.state.selectedSearchMethod}
-                        onClick={() => { this.props.clickHandler(this.props.searchMethod, this.state.searchValue); }}
+                        onClick={() => { this.props.clickHandler(this.props.searchMethod, this.props.searchTerms); }}
                         type="button"
                     >
                         Find Restaurants!
