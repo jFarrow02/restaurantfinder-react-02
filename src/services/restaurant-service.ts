@@ -5,18 +5,18 @@ const SERVER_URI = `http://${SERVER_HOST}:${SERVER_PORT}/restaurants`;
 
 const RestaurantService = {
 
-    async getRestaurantsByBorough(boroughName: string): Promise<RestaurantInterface[]> {
+    async getRestaurantsByBorough(boroughName: string | null): Promise<RestaurantInterface[]> {
         const restaurants = await fetch(`${SERVER_URI}/find/borough/${boroughName}`);
         return restaurants.json();
     },
 
-    async getRestaurantsByCuisineType(cuisineType: string): Promise<RestaurantInterface[]> {
-        const restaurants = await fetch(`${SERVER_URI}/find/cuisine/${encodeURIComponent(cuisineType)}`);
+    async getRestaurantsByCuisineType(cuisineType: string | null): Promise<RestaurantInterface[]> {
+        const restaurants = await fetch(`${SERVER_URI}/find/cuisine/${cuisineType}`);
         return restaurants.json();
     },
 
-    async getRestaurantsByName(name: string): Promise<RestaurantInterface[]> {
-        const restaurants = await fetch(`${SERVER_URI}/find/cuisine/${encodeURIComponent(name)}`);
+    async getRestaurantsByName(name: string | null): Promise<RestaurantInterface[]> {
+        const restaurants = await fetch(`${SERVER_URI}/find/name/${name}`);
         return restaurants.json();
     },
 };

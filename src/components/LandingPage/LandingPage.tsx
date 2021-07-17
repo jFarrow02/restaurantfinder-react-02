@@ -62,6 +62,26 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         return classNames;
     }
 
+    async findRestaurantsBySearchMethodAndTerms() {
+        const { selectedSearchMethod, searchValue } = this.state;
+        const [ borough, name, avg_rating, cuisine_type ] = config.searchMethods;
+        
+        switch(selectedSearchMethod) {
+            case borough:
+                this.setState( { ...this.state, restaurantList: await RestaurantService.getRestaurantsByBorough(searchValue) });
+                break;
+            case name:
+                this.setState({ ...this.state, restaurantList: await RestaurantService.getRestaurantsByName(searchValue) });
+                break;
+            case cuisine_type:
+                this.setState({ ...this.state, restaurantList: await RestaurantService.getRestaurantsByCuisineType(searchValue) });
+                break;
+            default:
+                throw new Error('unknown search method');
+
+        }
+    }
+
     async componentDidMount(): Promise<void> {
         const cuisineTypes = await CuisineService.getAllCuisineTypes();
         const sorted = [...cuisineTypes].sort((a, b) => {
@@ -181,7 +201,13 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
                     />
                 </div>
                 <div className="LandingPage_search-controls">
-                    <button type="button">Find Restaurants!</button>
+                    <button 
+                        type="button"
+                        disabled={!this.state.selectedSearchMethod}
+                        onClick={() => this.findRestaurantsBySearchMethodAndTerms()}
+                    >
+                        Find Restaurants!
+                    </button>
                 </div>
             </div>
         );
