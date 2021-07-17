@@ -29,13 +29,36 @@ export default class SearchInputList extends React.Component<SearchInputListProp
         };
     }
 
+    getDefaultSearchValues(searchMethod: string) {
+        let defaultValue;
+        const [borough, name, avgRating, cuisineType] = config.searchMethods;
+        switch(searchMethod) {
+            case borough:
+                defaultValue = config.boroughNames[0];
+                break;
+            case name:
+                defaultValue = '';
+                break;
+            case avgRating:
+                defaultValue = config.avgGrades[0];
+                break;
+            case cuisineType:
+                defaultValue = this.props.cuisineTypes[0].cuisine_type;
+                break;
+            default:
+                defaultValue = null;    
+        }
+        return defaultValue; 
+    }
+
     setDisplayClassName(searchMethod: string): string {
         const classNames = this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod === searchMethod ? 'show' : 'hide';
         return classNames;
     }
 
     setSearchMethod(method: string): void {
-        this.setState({...this.state, selectedSearchMethod: method });
+        const searchValue = this.state.searchValue ? this.state.searchValue : this.getDefaultSearchValues(method);
+        this.setState({...this.state, selectedSearchMethod: method, searchValue });
     }
 
     render() {
@@ -63,7 +86,7 @@ export default class SearchInputList extends React.Component<SearchInputListProp
                 <div className="SearchInputList_search-controls">
                     <button
                         // disabled={!this.state.selectedSearchMethod}
-                        onClick={() => { this.props.clickHandler(this.state.selectedSearchMethod, this.props.searchTerms); }}
+                        onClick={() => { this.props.clickHandler(this.state.selectedSearchMethod, this.state.searchValue); }}
                         type="button"
                     >
                         Find Restaurants!

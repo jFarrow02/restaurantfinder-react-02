@@ -23,12 +23,10 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
     }
 
     setSelectedSearchTerms(searchValue: string): void {
-        console.log(searchValue);
         this.setState({ ...this.state, selectedSearchTerms: searchValue });
     }
 
     async findRestaurantsBySearchMethodAndTerms(searchMethod: string) {
-        // this.setState({ ...this.state, restaurantResultsLoading: true });
         const [ borough, name, avg_rating, cuisine_type ] = config.searchMethods;
         
         switch(searchMethod) {
