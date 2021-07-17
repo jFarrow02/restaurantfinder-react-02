@@ -10,6 +10,7 @@ interface SearchInputListPropsInterface {
     inputs: SearchInputListInputInterface[],
     cuisineTypes: CuisineTypeInterface[],
     searchTerms: string,
+    onSearchMethodSelect: Function,
 }
 
 interface SearchInputListStateInterface {
@@ -29,36 +30,13 @@ export default class SearchInputList extends React.Component<SearchInputListProp
         };
     }
 
-    getDefaultSearchValues(searchMethod: string) {
-        let defaultValue;
-        const [borough, name, avgRating, cuisineType] = config.searchMethods;
-        switch(searchMethod) {
-            case borough:
-                defaultValue = config.boroughNames[0];
-                break;
-            case name:
-                defaultValue = '';
-                break;
-            case avgRating:
-                defaultValue = config.avgGrades[0];
-                break;
-            case cuisineType:
-                defaultValue = this.props.cuisineTypes[0].cuisine_type;
-                break;
-            default:
-                defaultValue = null;    
-        }
-        return defaultValue; 
-    }
-
     setDisplayClassName(searchMethod: string): string {
         const classNames = this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod === searchMethod ? 'show' : 'hide';
         return classNames;
     }
 
     setSearchMethod(method: string): void {
-        const searchValue = this.state.searchValue ? this.state.searchValue : this.getDefaultSearchValues(method);
-        this.setState({...this.state, selectedSearchMethod: method, searchValue });
+        this.setState({...this.state, selectedSearchMethod: method });
     }
 
     render() {
@@ -71,7 +49,11 @@ export default class SearchInputList extends React.Component<SearchInputListProp
                     key={`search-input-${index}`}
                     labelText={labelText}
                     name={name}
-                    onClick={() => {this.setSearchMethod(value)}}
+                    onClick={() => {
+                            this.props.onSearchMethodSelect(value);
+                            // this.setDisplayClassName(value)
+                        }
+                    }
                     value={value}
                 >
                     {children}

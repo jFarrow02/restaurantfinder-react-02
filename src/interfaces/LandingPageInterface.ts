@@ -6,5 +6,6 @@ export interface LandingPageInterface {
     cuisineTypes: CuisineTypeInterface[],
     restaurantList: RestaurantInterface[],
     restaurantResultsLoading: boolean,
-    selectedSearchTerms: string,
+    selectedSearchValue: string,
+    selectedSearchMethod: string | null,
 };

@@ -15,15 +15,42 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
 
         this.state = {
             showBoroughSelect: false,
-            selectedSearchTerms: '',
+            selectedSearchValue: '',
+            selectedSearchMethod: null,
             cuisineTypes: [],
             restaurantList: [],
             restaurantResultsLoading: false,
         };
     }
 
-    setSelectedSearchTerms(searchValue: string): void {
-        this.setState({ ...this.state, selectedSearchTerms: searchValue });
+    setSelectedSearchValueAndMethod(searchValue: string, searchMethod: string): void {
+        this.setState({ ...this.state, selectedSearchValue: searchValue, selectedSearchMethod: searchMethod });
+    }
+
+    setSearchMethod(searchMethod: string): void {
+        this.setState({...this.state, selectedSearchMethod: searchMethod });
+    }
+
+    getDefaultSearchValues(searchMethod: string) {
+        let defaultValue;
+        const [borough, name, avgRating, cuisineType] = config.searchMethods;
+        switch(searchMethod) {
+            case borough:
+                defaultValue = config.boroughNames[0];
+                break;
+            case name:
+                defaultValue = '';
+                break;
+            case avgRating:
+                defaultValue = config.avgGrades[0];
+                break;
+            case cuisineType:
+                defaultValue = this.state.cuisineTypes[0].cuisine_type;
+                break;
+            default:
+                defaultValue = null;    
+        }
+        return defaultValue; 
     }
 
     async findRestaurantsBySearchMethodAndTerms(searchMethod: string) {
@@ -31,13 +58,13 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         
         switch(searchMethod) {
             case borough:
-                this.setState( { ...this.state, restaurantList: await RestaurantService.getRestaurantsByBorough(this.state.selectedSearchTerms) });
+                this.setState( { ...this.state, restaurantList: await RestaurantService.getRestaurantsByBorough(this.state.selectedSearchValue) });
                 break;
             case name:
-                this.setState({ ...this.state, restaurantList: await RestaurantService.getRestaurantsByName(this.state.selectedSearchTerms) });
+                this.setState({ ...this.state, restaurantList: await RestaurantService.getRestaurantsByName(this.state.selectedSearchValue) });
                 break;
             case cuisine_type:
-                this.setState({ ...this.state, restaurantList: await RestaurantService.getRestaurantsByCuisineType(this.state.selectedSearchTerms) });
+                this.setState({ ...this.state, restaurantList: await RestaurantService.getRestaurantsByCuisineType(this.state.selectedSearchValue) });
                 break;
             default:
                 throw new Error('unknown search method');
@@ -90,6 +117,8 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
     }
 
     render() {
+        const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
+
         const boroughList = config.boroughNames.map((borough, index)=> { return <option value={borough} key={`borough-select-${index}`}>{borough}</option>});
         
         const gradesList = config.avgGrades.map((grade, index) => { return <option value={grade} key={`grade-select-${index}`}>{grade}</option>});
@@ -102,7 +131,8 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         const boroughInputChildren = (
             <select
                 name="select-borough"
-                onChange={(e) => {this.setSelectedSearchTerms(e.target.value)}}
+                onChange={(e) => {this.setSelectedSearchValueAndMethod(e.target.value, borough)}}
+                // onChange={(e) => { this.setSelectedSearchValueAndMethod(e.target.value, borough).bind(this)}}
             >
                {boroughList}
             </select>
@@ -111,14 +141,14 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         const nameInputChildren = (
             <input 
                 type="text"
-                onChange={(e) => {this.setSelectedSearchTerms(e.target.value)}}
+                onChange={(e) => {this.setSelectedSearchValueAndMethod(e.target.value, name)}}
             />
         );
 
         const gradeInputChildren = (
             <select 
                 name="select-avg-grade"
-                onChange={(e) => {this.setSelectedSearchTerms(e.target.value)}}
+                onChange={(e) => {this.setSelectedSearchValueAndMethod(e.target.value, avgRating)}}
             >
                 { gradesList}
             </select>
@@ -127,12 +157,12 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         const cuisineInputChildren = (
             <select
                 name="select-cuisine-type"
-                onChange={(e) => {this.setSelectedSearchTerms(e.target.value)}}
+                onChange={(e) => {this.setSelectedSearchValueAndMethod(e.target.value, cuisineType)}}
             >
                 { cuisineTypeList }
             </select>
         );
-        const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
+
         const searchInputConfig = [
             { name: 'search-method', value: borough, labelText: 'Borough', description: 'Find Restaurants by Borough:', children: boroughInputChildren },
             { name: 'search-method', value: name, labelText: 'Name', description: 'Find Restaurant by Name:', children: nameInputChildren },
@@ -145,7 +175,8 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
                 clickHandler={this.findRestaurantsBySearchMethodAndTerms.bind(this)}
                 cuisineTypes={this.state.cuisineTypes}
                 inputs={searchInputConfig}
-                searchTerms={this.state.selectedSearchTerms}
+                searchTerms={this.state.selectedSearchValue}
+                onSearchMethodSelect={this.setSearchMethod.bind(this)}
             />
         );
 
