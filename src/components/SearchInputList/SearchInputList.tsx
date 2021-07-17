@@ -9,6 +9,7 @@ interface SearchInputListPropsInterface {
     clickHandler: Function,
     inputs: SearchInputListInputInterface[],
     cuisineTypes: CuisineTypeInterface[],
+    searchTerms: string,
 }
 
 interface SearchInputListStateInterface {
@@ -34,29 +35,7 @@ export default class SearchInputList extends React.Component<SearchInputListProp
     }
 
     setSearchMethod(method: string): void {
-        this.setState({...this.state, selectedSearchMethod: method, searchValue: this.getDefaultSearchValues(method)});
-    }
-
-    getDefaultSearchValues(searchMethod: string) {
-        let defaultValue;
-        const [borough, name, avgRating, cuisineType] = config.searchMethods;
-        switch(searchMethod) {
-            case borough:
-                defaultValue = config.boroughNames[0];
-                break;
-            case name:
-                defaultValue = '';
-                break;
-            case avgRating:
-                defaultValue = config.avgGrades[0];
-                break;
-            case cuisineType:
-                defaultValue = this.props.cuisineTypes[0].cuisine_type;
-                break;
-            default:
-                defaultValue = null;    
-        }
-        return defaultValue; 
+        this.setState({...this.state, selectedSearchMethod: method });
     }
 
     render() {
@@ -83,8 +62,8 @@ export default class SearchInputList extends React.Component<SearchInputListProp
                 </div>
                 <div className="SearchInputList_search-controls">
                     <button
-                        disabled={!this.state.selectedSearchMethod}
-                        onClick={() => { this.props.clickHandler(this.state.selectedSearchMethod, this.state.searchValue); }}
+                        // disabled={!this.state.selectedSearchMethod}
+                        onClick={() => { this.props.clickHandler(this.state.selectedSearchMethod, this.props.searchTerms); }}
                         type="button"
                     >
                         Find Restaurants!

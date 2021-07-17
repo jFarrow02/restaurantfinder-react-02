@@ -147,6 +147,7 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
                 clickHandler={this.findRestaurantsBySearchMethodAndTerms.bind(this)}
                 cuisineTypes={this.state.cuisineTypes}
                 inputs={searchInputConfig}
+                searchTerms={this.state.selectedSearchTerms}
             />
         );
 
