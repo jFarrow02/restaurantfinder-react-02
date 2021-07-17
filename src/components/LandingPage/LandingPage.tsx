@@ -71,32 +71,6 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
 
         }
     }
-    // async findRestaurantsBySearchMethodAndTerms(searchMethod: string, searchValue: string) {
-    //     this.setState({ ...this.state, restaurantResultsLoading: true });
-    //     const [ borough, name, avg_rating, cuisine_type ] = config.searchMethods;
-
-    //     switch(searchMethod) {
-           
-    //         case borough:
-    //             RestaurantService.getRestaurantsByBorough(searchValue)
-    //                 .then(data => {
-    //                     this.setState({ ...this.state, restaurantList: data, restaurantResultsLoading: false });
-    //                 }).catch(err => {
-    //                     throw err;
-    //                 })
-    //             this.setState( { ...this.state,  restaurantList: await RestaurantService.getRestaurantsByBorough(searchValue)});
-    //             break;
-    //         case name:
-    //             this.setState({ ...this.state, restaurantList: await RestaurantService.getRestaurantsByName(searchValue) });
-    //             break;
-    //         case cuisine_type:
-    //             this.setState({ ...this.state, restaurantList: await RestaurantService.getRestaurantsByCuisineType(searchValue) });
-    //             break;
-    //         default:
-    //             throw new Error('unknown search method');
-
-    //     }
-    // }
 
     async componentDidMount(): Promise<void> {
         const cuisineTypes = await CuisineService.getAllCuisineTypes();
@@ -119,20 +93,20 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
     render() {
         const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
 
-        const boroughList = config.boroughNames.map((borough, index)=> { return <option value={borough} key={`borough-select-${index}`}>{borough}</option>});
+        const boroughList = config.boroughNames.map((borough, index)=> { return <option value={borough} selected={this.state.selectedSearchValue === borough} key={`borough-select-${index}`}>{borough}</option>});
         
         const gradesList = config.avgGrades.map((grade, index) => { return <option value={grade} key={`grade-select-${index}`}>{grade}</option>});
 
         const cuisineTypeList = this.state.cuisineTypes.map((type, index) => {
             const { cuisine_type } = type;
-            return <option value={cuisine_type} key={`cuisine-select-${index}`}>{cuisine_type}</option>
+            return <option value={cuisine_type} selected={this.state.selectedSearchValue === cuisine_type} key={`cuisine-select-${index}`}>{cuisine_type}</option>
         });
 
         const boroughInputChildren = (
             <select
                 name="select-borough"
-                // onChange={(e) => {this.setSelectedSearchValue(e.target.value, borough)}}
                 onChange={(e) => {this.setSelectedSearchValue(e.target.value)}}
+                
             >
                {boroughList}
             </select>
@@ -141,7 +115,6 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         const nameInputChildren = (
             <input 
                 type="text"
-                // onChange={(e) => {this.setSelectedSearchValue(e.target.value, name)}}
                 onChange={(e) => {this.setSelectedSearchValue(e.target.value)}}
             />
         );
@@ -149,7 +122,6 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         const gradeInputChildren = (
             <select 
                 name="select-avg-grade"
-                // onChange={(e) => {this.setSelectedSearchValue(e.target.value, avgRating)}}
                 onChange={(e) => {this.setSelectedSearchValue(e.target.value)}}
             >
                 { gradesList}
@@ -159,7 +131,6 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         const cuisineInputChildren = (
             <select
                 name="select-cuisine-type"
-                // onChange={(e) => {this.setSelectedSearchValue(e.target.value, cuisineType)}}
                 onChange={(e) => {this.setSelectedSearchValue(e.target.value)}}
             >
                 { cuisineTypeList }
