@@ -3,7 +3,17 @@ import RestaurantInterface from '../interfaces/RestaurantInterface';
 
 const SERVER_URI = `http://${SERVER_HOST}:${SERVER_PORT}/restaurants`;
 
+interface RestaurantResponseInterface {
+    data: Promise<RestaurantInterface[]>,
+    done: boolean,
+}
+
 const RestaurantService = {
+
+    // async getRestaurantsByBorough(boroughName: string | null): Promise<RestaurantResponseInterface> {
+    //     const restaurants = await fetch(`${SERVER_URI}/find/borough/${boroughName}`);
+    //     return { done: restaurants.status === 200, data: await restaurants.json() };
+    // },
 
     async getRestaurantsByBorough(boroughName: string | null): Promise<RestaurantInterface[]> {
         const restaurants = await fetch(`${SERVER_URI}/find/borough/${boroughName}`);
@@ -12,6 +22,7 @@ const RestaurantService = {
 
     async getRestaurantsByCuisineType(cuisineType: string | null): Promise<RestaurantInterface[]> {
         const restaurants = await fetch(`${SERVER_URI}/find/cuisine/${cuisineType}`);
+        console.log(restaurants);
         return restaurants.json();
     },
 

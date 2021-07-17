@@ -3,6 +3,5 @@ export default interface SearchInputListInputInterface {
     description: string,
     labelText: string,
     name: string,
-    onClick: Function,
     value: string,
 }

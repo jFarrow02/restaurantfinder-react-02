@@ -15,8 +15,6 @@ interface SearchInputListStateInterface {
     showBoroughSelect: boolean,
     selectedSearchMethod: string | null,
     searchValue: string | null,
-    
-    //restaurantList: RestaurantInterface[],
 };
 export default class SearchInputList extends React.Component<SearchInputListPropsInterface, SearchInputListStateInterface> {
 
@@ -27,8 +25,12 @@ export default class SearchInputList extends React.Component<SearchInputListProp
             showBoroughSelect: false,
             selectedSearchMethod: null,
             searchValue: null,
-            // restaurantList: [],
         };
+    }
+
+    setDisplayClassName(searchMethod: string): string {
+        const classNames = this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod === searchMethod ? 'show' : 'hide';
+        return classNames;
     }
 
     setSearchMethod(method: string): void {
@@ -58,13 +60,12 @@ export default class SearchInputList extends React.Component<SearchInputListProp
     }
 
     render() {
-        const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
         const inputElements = this.props.inputs.map((inputObj, index) => {
-            const { children, description, labelText, name, onClick, value } = inputObj;
+            const { children, description, labelText, name, value } = inputObj;
             return (
                 <SearchInput
                     description={description}
-                    inputClasses={''}
+                    inputClasses={this.state.selectedSearchMethod !== null && this.state.selectedSearchMethod === value ? 'show' : 'hide'}
                     key={`search-input-${index}`}
                     labelText={labelText}
                     name={name}
@@ -82,8 +83,9 @@ export default class SearchInputList extends React.Component<SearchInputListProp
                 </div>
                 <div className="SearchInputList_search-controls">
                     <button
+                        disabled={!this.state.selectedSearchMethod}
+                        onClick={() => { this.props.clickHandler(this.state.selectedSearchMethod, this.state.searchValue); }}
                         type="button"
-                        onClick={() => { this.props.clickHandler(); }}
                     >
                         Find Restaurants!
                     </button>

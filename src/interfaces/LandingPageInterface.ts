@@ -5,4 +5,6 @@ export interface LandingPageInterface {
     showBoroughSelect: boolean,
     cuisineTypes: CuisineTypeInterface[],
     restaurantList: RestaurantInterface[],
+    restaurantResultsLoading: boolean,
+    selectedSearchTerms: string,
 };
