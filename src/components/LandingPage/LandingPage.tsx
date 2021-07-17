@@ -176,6 +176,7 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
                 cuisineTypes={this.state.cuisineTypes}
                 inputs={searchInputConfig}
                 searchTerms={this.state.selectedSearchValue}
+                searchMethod={this.state.selectedSearchMethod}
                 onSearchMethodSelect={this.setSearchMethod.bind(this)}
             />
         );

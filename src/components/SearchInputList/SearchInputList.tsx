@@ -11,6 +11,7 @@ interface SearchInputListPropsInterface {
     cuisineTypes: CuisineTypeInterface[],
     searchTerms: string,
     onSearchMethodSelect: Function,
+    searchMethod: string | null,
 }
 
 interface SearchInputListStateInterface {
