@@ -5,6 +5,9 @@ import SearchInput from '../SearchInput/SearchInput';
 import config from '../../config/constants/landing-page';
 import CuisineService from '../../services/cuisine-types-service';
 import RestaurantService from '../../services/restaurant-service';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import RestaurantDetails from '../RestaurantDetails/RestaurantDetails';
+import NotFound  from '../404NotFound/404NotFound';
 
 export default class LandingPage extends React.Component<{}, LandingPageInterface> {
     constructor(props: any) {
@@ -101,6 +104,7 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
     }
 
     render() {
+
         const boroughList = config.boroughNames.map((borough, index)=> {
             return <option value={borough} key={`borough-select-${index}`}>{borough}</option>
         });
@@ -158,58 +162,74 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
                 </select>
         )
         return(
-            <div className="LandingPage">
-                <div className="LandingPage_search">
-                    <SearchInput
-                        name="search-method"
-                        value="borough"
-                        onClick={() => {this.setSearchMethod(borough)}}
-                        inputClasses={boroughSelectClasses}
-                        children={boroughInputChildren}
-                        labelText="Borough"
-                        description="Find Restaurants by Borough:"
-                    />
+            <BrowserRouter>
+                <Switch>
+                    <Route exact path="/search">
+                        <div className="LandingPage">
+                            <div className="LandingPage_search">
+                                <SearchInput
+                                    name="search-method"
+                                    value="borough"
+                                    onClick={() => {this.setSearchMethod(borough)}}
+                                    inputClasses={boroughSelectClasses}
+                                    children={boroughInputChildren}
+                                    labelText="Borough"
+                                    description="Find Restaurants by Borough:"
+                                />
 
-                    <SearchInput
-                        name="search-method"
-                        value="name"
-                        onClick={() => {this.setSearchMethod(name)}}
-                        inputClasses={nameSelectClasses}
-                        children={nameInputChildren}
-                        labelText="Name"
-                        description="Find Restaurants by Name:"
-                    />
+                                <SearchInput
+                                    name="search-method"
+                                    value="name"
+                                    onClick={() => {this.setSearchMethod(name)}}
+                                    inputClasses={nameSelectClasses}
+                                    children={nameInputChildren}
+                                    labelText="Name"
+                                    description="Find Restaurants by Name:"
+                                />
 
-                    <SearchInput
-                        name="search-method"
-                        value="avg_rating"
-                        onClick={() => {this.setSearchMethod(avgRating)}}
-                        inputClasses={ratingSelectClasses}
-                        children={gradeInputChildren}
-                        labelText="Average Rating"
-                        description="Find Restaurants by Average Rating:"
-                    />
+                                <SearchInput
+                                    name="search-method"
+                                    value="avg_rating"
+                                    onClick={() => {this.setSearchMethod(avgRating)}}
+                                    inputClasses={ratingSelectClasses}
+                                    children={gradeInputChildren}
+                                    labelText="Average Rating"
+                                    description="Find Restaurants by Average Rating:"
+                                />
 
-                    <SearchInput
-                        name="search-method"
-                        value="cuisine_type"
-                        onClick={() => {this.setSearchMethod(cuisineType)}}
-                        inputClasses={cuisineSelectClasses}
-                        children={cuisineInputChildren}
-                        labelText="Cuisine Type"
-                        description="Find Restaurants by Cuisine Type:"
-                    />
-                </div>
-                <div className="LandingPage_search-controls">
-                    <button 
-                        type="button"
-                        disabled={!this.state.selectedSearchMethod}
-                        onClick={() => this.findRestaurantsBySearchMethodAndTerms()}
-                    >
-                        Find Restaurants!
-                    </button>
-                </div>
-            </div>
+                                <SearchInput
+                                    name="search-method"
+                                    value="cuisine_type"
+                                    onClick={() => {this.setSearchMethod(cuisineType)}}
+                                    inputClasses={cuisineSelectClasses}
+                                    children={cuisineInputChildren}
+                                    labelText="Cuisine Type"
+                                    description="Find Restaurants by Cuisine Type:"
+                                />
+                            </div>
+                            <div className="LandingPage_search-controls">
+                                <button 
+                                    type="button"
+                                    disabled={!this.state.selectedSearchMethod}
+                                    onClick={() => this.findRestaurantsBySearchMethodAndTerms()}
+                                >
+                                    Find Restaurants!
+                                </button>
+                            </div>
+                        </div>
+                    </Route>
+                    <Route path="/restaurant/details/:id">
+                        <RestaurantDetails/>
+                    </Route>
+                    <Route path="/">
+                        <Redirect to={ {pathname: '/search'} }/>
+                    </Route>
+                    <Route path="*">
+                        <NotFound/>
+                    </Route>
+                </Switch>
+            </BrowserRouter>
+            
         );
     }
 }
