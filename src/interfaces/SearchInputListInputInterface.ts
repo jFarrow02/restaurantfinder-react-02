@@ -1,9 +1,8 @@
-export default interface SearchInputInterface {
+export default interface SearchInputListInputInterface {
     children: any,
     description: string,
-    inputClasses: string,
     labelText: string,
     name: string,
     onClick: Function,
     value: string,
-};
+}

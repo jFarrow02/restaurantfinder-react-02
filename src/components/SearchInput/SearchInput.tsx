@@ -4,13 +4,13 @@ import './SearchInput.scss';
 const SearchInput = (props: SearchInputInterface) => {
 
     const {
-        name,
         children,
-        inputClasses,
-        value,
-        onClick,
-        labelText,
         description,
+        inputClasses,
+        labelText,
+        name,
+        onClick,
+        value,
     } = props;
 
     return(
