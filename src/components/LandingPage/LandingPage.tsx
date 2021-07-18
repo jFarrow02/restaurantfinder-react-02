@@ -144,7 +144,7 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
             { name: 'search-method', value: cuisineType, labelText: 'Cuisine Type', description: 'Find Restaurants by Cuisine Type:', children: cuisineInputChildren },
         ];
 
-        const searchContent = this.state.restaurantResultsLoading ? <div>Loading...</div> : (
+        const searchContent = this.state.restaurantList.length < 1 ? (
             <SearchInputList
                 clickHandler={this.findRestaurantsBySearchMethodAndTerms.bind(this)}
                 cuisineTypes={this.state.cuisineTypes}
@@ -153,26 +153,12 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
                 searchMethod={this.state.selectedSearchMethod}
                 onSearchMethodSelect={this.setSelectedSearchMethod.bind(this)}
             />
-        );
+        ) : <RestaurantList restaurantList={this.state.restaurantList}/>;
 
-        return(
-            <BrowserRouter>
-                <Switch>
-                    <Route exact path='/search'>{searchContent}</Route>
-                    <Route path='/restaurants/results'>
-                        {
-                            () => { return this.state.restaurantList.length < 1 ? (<div>No Restaurants</div>) : <RestaurantList restaurantList={this.state.restaurantList}/>}
-                        }
-                    </Route>
-                    <Route path="/">
-                        <Redirect to={ {pathname: '/search'} }/>
-                    </Route>
-                    <Route path="*">
-                        <NotFound/>
-                    </Route>
-                </Switch>
-            </BrowserRouter>
-            
+        return (
+            <div className='LandingPage'>
+                { searchContent }
+            </div>
         );
     }
 }

@@ -10,7 +10,7 @@ const RestaurantThumbnail = (props: RestaurantThumbnailInterface) => {
         restaurant: {
             address,
             borough,
-            cuisineType,
+            cuisine,
             grades,
             name,
         }
@@ -18,7 +18,7 @@ const RestaurantThumbnail = (props: RestaurantThumbnailInterface) => {
     return (
         <div className='RestaurantThumbnail'>
             <h4>{name}</h4>
-            <p>{cuisineType}</p>
+            <p>{cuisine}</p>
             <p>{borough}</p>
         </div>
     );

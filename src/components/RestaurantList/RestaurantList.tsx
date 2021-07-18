@@ -7,12 +7,13 @@ interface RestaurantListInterface {
 }
 const RestaurantList = (props: RestaurantListInterface) => {
     const { restaurantList } = props;
+    const restaurantThumbnails = restaurantList.map((restaurant, index) => {
+        return <RestaurantThumbnail restaurant={restaurant} key={`restaurant-thumbnail-${index}`}/>
+    });
 
     return(
        <div className='RestaurantList'>
-          { () => { return restaurantList.map((restaurant, index) => {
-              <RestaurantThumbnail restaurant={restaurant} key={`restaurant-thumbnail-${index}`}/>
-          })}}
+          { restaurantThumbnails }
        </div>
     )
 };

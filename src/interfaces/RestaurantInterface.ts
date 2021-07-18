@@ -5,7 +5,7 @@ export default interface RestaurantInterface {
     address: AddressInterface,
     borough: string,
     grades: GradeInterface[],
-    cuisineType: string,
+    cuisine: string,
     name: string,
     restaurant_id: string,
 }
