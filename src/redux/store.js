@@ -1,13 +1,20 @@
+import { configureStore } from "@reduxjs/toolkit";
 
-
-const restaurantsReducer = (state = [], action) => {
-    return state;
+const initialState = {
+    restaurantsList: [],
 };
 
-const restaurantFinderAppState = (state = {}, action) => {
-    return {
-        restaurantsList: restaurantFinderAppState(state.restaurantsList, action),
-    };
+const RESTAURANTSLIST_FETCH = 'restaurantsList/fetch';
+
+const restaurantsReducer = (state = initialState, action) => {
+    switch(action.type){
+        case RESTAURANTSLIST_FETCH:
+            return { ...state, restaurantsList: action.payload };
+        default:
+            return state;
+    }
 };
 
-export default restaurantFinderAppState;
+const store = configureStore({ reducer: restaurantsReducer });
+
+export default store;
