@@ -7,13 +7,14 @@ import RestaurantList from '../RestaurantList/RestaurantList';
 import CuisineService from '../../services/cuisine-types-service';
 import RestaurantService from '../../services/restaurant-service';
 import config from '../../config/constants/landing-page';
+import store, { restaurantListFetchActionCreator} from '../../redux/store';
 
 const LandingPage = () => {
     const [ selectedSearchValue, setSelectedSearchValue ] = useState<string | null >(null);
     const [ selectedSearchMethod, setSelectedSearchMethod ] = useState<string | null >(null);
     const [ cuisineTypes, setCuisineTypes ] = useState<CuisineTypeInterface[]>([]);
-    const [ restaurantList, setRestaurantList ] = useState<RestaurantInterface[]>([]);
-    // const [ resturantResultsLoading, setRestaurantResultsLoading ] = useState<boolean>(false);
+
+    const restaurantList = store.getState().restaurantsList;
 
     const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
 
@@ -88,8 +89,8 @@ const LandingPage = () => {
                 default:
                     throw new Error('unknown search method');
             }
-            setRestaurantList(restaurants);
-        }
+            store.dispatch(restaurantListFetchActionCreator(restaurants));
+        };
 
 
 

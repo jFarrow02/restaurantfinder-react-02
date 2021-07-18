@@ -6,6 +6,10 @@ const initialState = {
 
 const RESTAURANTSLIST_FETCH = 'restaurantsList/fetch';
 
+export const restaurantListFetchActionCreator = (payload = []) => {
+    return { type: RESTAURANTSLIST_FETCH, payload };
+};
+
 const restaurantsReducer = (state = initialState, action) => {
     switch(action.type){
         case RESTAURANTSLIST_FETCH:
