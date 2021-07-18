@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './LandingPage.scss';
 import { LandingPageInterface } from '../../interfaces/LandingPageInterface';
+import CuisineTypeInterface from '../../interfaces/CuisineInterface';
 import SearchInputList from '../SearchInputList/SearchInputList';
 import RestaurantList from '../RestaurantList/RestaurantList';
 import CuisineService from '../../services/cuisine-types-service';
@@ -12,7 +13,7 @@ const LandingPage = () => {
     const [ showBoroughSelect, setShowBoroughSelect ] = useState<boolean>(false);
     const [ selectedSearchValue, setSelectedSearchValue ] = useState<string | null >(null);
     const [ selectedSearchMethod, setSelectedSearchMethod ] = useState<string | null >(null);
-    const [ cuisineTypes, setCuisineTypes ] = useState([]);
+    const [ cuisineTypes, setCuisineTypes ] = useState<CuisineTypeInterface[]>([]);
     const [ restaurantList, setRestaurantList ] = useState([]);
     const [ resturantResultsLoading, setRestaurantResultsLoading ] = useState<boolean>(false);
 
@@ -27,6 +28,24 @@ const LandingPage = () => {
             return <option value={cuisine_type} selected={selectedSearchValue === cuisine_type} key={`cuisine-select-${index}`}>{cuisine_type}</option>
         });
 
+        const fetchCuisineTypes = async () => {
+            const cuisineTypes = await CuisineService.getAllCuisineTypes();
+            const sorted = [...cuisineTypes].sort((a, b) => {
+                if(a.cuisine_type < b.cuisine_type){
+                    return -1;
+                }
+                if(a.cuisine_type > b.cuisine_type){
+                    return 1;
+                }
+                return 0;
+            });
+            setCuisineTypes(sorted);
+        }
+
+        useEffect(() => {
+            fetchCuisineTypes();
+        });
+        
         const boroughInputChildren = (
             <select
                 name="select-borough"
