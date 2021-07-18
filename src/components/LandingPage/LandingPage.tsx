@@ -2,8 +2,8 @@ import React from 'react';
 import './LandingPage.scss';
 import { LandingPageInterface } from '../../interfaces/LandingPageInterface';
 import SearchInputList from '../SearchInputList/SearchInputList';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import RestaurantDetails from '../RestaurantDetails/RestaurantDetails';
+import { BrowserRouter, Switch, Route, Redirect, useRouteMatch } from 'react-router-dom';
+import RestaurantList from '../RestaurantList/RestaurantList';
 import NotFound  from '../404NotFound/404NotFound';
 import CuisineService from '../../services/cuisine-types-service';
 import RestaurantService from '../../services/restaurant-service';
@@ -158,9 +158,11 @@ export default class LandingPage extends React.Component<{}, LandingPageInterfac
         return(
             <BrowserRouter>
                 <Switch>
-                    <Route exact path="/search">{searchContent}</Route>
-                    <Route path="/restaurant/details/:id">
-                        <RestaurantDetails/>
+                    <Route exact path='/search'>{searchContent}</Route>
+                    <Route path='/restaurants/results'>
+                        {
+                            () => { return this.state.restaurantList.length < 1 ? (<div>No Restaurants</div>) : <RestaurantList restaurantList={this.state.restaurantList}/>}
+                        }
                     </Route>
                     <Route path="/">
                         <Redirect to={ {pathname: '/search'} }/>

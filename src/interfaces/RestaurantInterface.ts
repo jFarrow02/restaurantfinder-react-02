@@ -7,5 +7,5 @@ export default interface RestaurantInterface {
     grades: GradeInterface[],
     cuisineType: string,
     name: string,
-    _id: string
+    restaurant_id: string,
 }

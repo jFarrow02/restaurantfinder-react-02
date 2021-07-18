@@ -1,8 +1,13 @@
 import './RestaurantDetails.scss';
-const RestaurantDetails = (props: any) => {
+import RestaurantInterface from '../../interfaces/RestaurantInterface';
+
+interface RestaurantDetailsInterface {
+    restaurant: RestaurantInterface,
+}
+const RestaurantDetails = (props: RestaurantDetailsInterface) => {
     return (
         <div className="RestaurantDetails">
-            Restaurant Details works OK!
+            
         </div>
     );
 };
