@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, DependencyList } from 'react';
 import './LandingPage.scss';
 import { LandingPageInterface } from '../../interfaces/LandingPageInterface';
+import RestaurantInterface from '../../interfaces/RestaurantInterface';
 import CuisineTypeInterface from '../../interfaces/CuisineInterface';
 import SearchInputList from '../SearchInputList/SearchInputList';
 import RestaurantList from '../RestaurantList/RestaurantList';
@@ -9,12 +10,11 @@ import RestaurantService from '../../services/restaurant-service';
 import config from '../../config/constants/landing-page';
 
 const LandingPage = () => {
-
-    const [ showBoroughSelect, setShowBoroughSelect ] = useState<boolean>(false);
+    const [ restaurantQuery, setRestaurantQuery ] = useState<DependencyList | undefined >();
     const [ selectedSearchValue, setSelectedSearchValue ] = useState<string | null >(null);
     const [ selectedSearchMethod, setSelectedSearchMethod ] = useState<string | null >(null);
     const [ cuisineTypes, setCuisineTypes ] = useState<CuisineTypeInterface[]>([]);
-    const [ restaurantList, setRestaurantList ] = useState([]);
+    const [ restaurantList, setRestaurantList ] = useState<RestaurantInterface[]>([]);
     const [ resturantResultsLoading, setRestaurantResultsLoading ] = useState<boolean>(false);
 
     const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
@@ -28,24 +28,75 @@ const LandingPage = () => {
             return <option value={cuisine_type} selected={selectedSearchValue === cuisine_type} key={`cuisine-select-${index}`}>{cuisine_type}</option>
         });
 
-        const fetchCuisineTypes = async () => {
-            const cuisineTypes = await CuisineService.getAllCuisineTypes();
-            const sorted = [...cuisineTypes].sort((a, b) => {
-                if(a.cuisine_type < b.cuisine_type){
-                    return -1;
-                }
-                if(a.cuisine_type > b.cuisine_type){
-                    return 1;
-                }
-                return 0;
-            });
-            setCuisineTypes(sorted);
-        }
+        const getDefaultSearchValuesForMethod = (searchMethod: string) => {
+            let defaultValue;
+            const [borough, name, avgRating, cuisineType] = config.searchMethods;
+            switch(searchMethod) {
+                case borough:
+                    defaultValue = config.boroughNames[0];
+                    break;
+                case name:
+                    defaultValue = '';
+                    break;
+                case avgRating:
+                    defaultValue = config.avgGrades[0];
+                    break;
+                case cuisineType:
+                    defaultValue = cuisineTypes[0].cuisine_type;
+                    break;
+                default:
+                    defaultValue = null;    
+            }
+            return defaultValue;
+            // setSelectedSearchValue(defaultValue)
+        };
+
+        const setSelectedSearchMethodAndDefaultValue = (searchMethod: string) => {
+            let defaultValue = getDefaultSearchValuesForMethod(searchMethod);
+            setSelectedSearchValue(defaultValue);
+            setSelectedSearchMethod(searchMethod);
+        };
+
 
         useEffect(() => {
+            const fetchCuisineTypes = async () => {
+                const cuisineTypes = await CuisineService.getAllCuisineTypes();
+                const sorted = [...cuisineTypes].sort((a, b) => {
+                    if(a.cuisine_type < b.cuisine_type){
+                        return -1;
+                    }
+                    if(a.cuisine_type > b.cuisine_type){
+                        return 1;
+                    }
+                    return 0;
+                });
+                setCuisineTypes(sorted);
+            };
             fetchCuisineTypes();
-        });
-        
+        }, []);
+
+        // useEffect(() => {
+        //     const findRestaurantsBySearchMethodAndTerms = async(searchTerms: string) => {
+        //             const [ borough, name, avg_rating, cuisine_type ] = config.searchMethods;
+            
+        //             switch(selectedSearchMethod) {
+        //                 case borough:
+        //                     setRestaurantList(await RestaurantService.getRestaurantsByBorough(selectedSearchValue));
+        //                     break;
+        //                 case name:
+        //                     setRestaurantList(await RestaurantService.getRestaurantsByName(selectedSearchValue));
+        //                     break;
+        //                 case cuisine_type:
+        //                     setRestaurantList(await RestaurantService.getRestaurantsByCuisineType(selectedSearchValue));
+        //                     break;
+        //                 default:
+        //                     throw new Error('unknown search method');
+        //         };
+        //     }
+        // }, [restaurantQuery]);
+
+
+
         const boroughInputChildren = (
             <select
                 name="select-borough"
@@ -90,13 +141,12 @@ const LandingPage = () => {
 
         const searchContent = restaurantList.length < 1 ? (
             <SearchInputList
-                // clickHandler={findRestaurantsBySearchMethodAndTerms.bind(this)}
-                clickHandler={() => { console.log('clicked') }}
+                clickHandler={setRestaurantQuery}
                 cuisineTypes={cuisineTypes}
                 inputs={searchInputConfig}
                 searchTerms={selectedSearchValue}
                 searchMethod={selectedSearchMethod}
-                onSearchMethodSelect={setSelectedSearchMethod.bind(this)}
+                onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}
             />
         ) : <RestaurantList restaurantList={restaurantList}/>;
         return (
