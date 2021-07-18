@@ -54,7 +54,8 @@ export default class SearchInputList extends React.Component<SearchInputListProp
                 <div className="SearchInputList_search-controls">
                     <button
                         // disabled={!this.state.selectedSearchMethod}
-                        onClick={() => { this.props.clickHandler(this.props.searchMethod, this.props.searchTerms); }}
+                        //onClick={() => { this.props.clickHandler(this.props.searchMethod, this.props.searchTerms); }}
+                        onClick={() => { this.props.clickHandler()}}
                         type="button"
                     >
                         Find Restaurants!

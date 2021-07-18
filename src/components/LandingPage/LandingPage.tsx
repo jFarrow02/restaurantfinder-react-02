@@ -1,6 +1,5 @@
 import { useState, useEffect, DependencyList } from 'react';
 import './LandingPage.scss';
-import { LandingPageInterface } from '../../interfaces/LandingPageInterface';
 import RestaurantInterface from '../../interfaces/RestaurantInterface';
 import CuisineTypeInterface from '../../interfaces/CuisineInterface';
 import SearchInputList from '../SearchInputList/SearchInputList';
@@ -10,12 +9,11 @@ import RestaurantService from '../../services/restaurant-service';
 import config from '../../config/constants/landing-page';
 
 const LandingPage = () => {
-    const [ restaurantQuery, setRestaurantQuery ] = useState<DependencyList | undefined >();
     const [ selectedSearchValue, setSelectedSearchValue ] = useState<string | null >(null);
     const [ selectedSearchMethod, setSelectedSearchMethod ] = useState<string | null >(null);
     const [ cuisineTypes, setCuisineTypes ] = useState<CuisineTypeInterface[]>([]);
     const [ restaurantList, setRestaurantList ] = useState<RestaurantInterface[]>([]);
-    const [ resturantResultsLoading, setRestaurantResultsLoading ] = useState<boolean>(false);
+    // const [ resturantResultsLoading, setRestaurantResultsLoading ] = useState<boolean>(false);
 
     const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
 
@@ -48,7 +46,6 @@ const LandingPage = () => {
                     defaultValue = null;    
             }
             return defaultValue;
-            // setSelectedSearchValue(defaultValue)
         };
 
         const setSelectedSearchMethodAndDefaultValue = (searchMethod: string) => {
@@ -75,25 +72,24 @@ const LandingPage = () => {
             fetchCuisineTypes();
         }, []);
 
-        // useEffect(() => {
-        //     const findRestaurantsBySearchMethodAndTerms = async(searchTerms: string) => {
-        //             const [ borough, name, avg_rating, cuisine_type ] = config.searchMethods;
-            
-        //             switch(selectedSearchMethod) {
-        //                 case borough:
-        //                     setRestaurantList(await RestaurantService.getRestaurantsByBorough(selectedSearchValue));
-        //                     break;
-        //                 case name:
-        //                     setRestaurantList(await RestaurantService.getRestaurantsByName(selectedSearchValue));
-        //                     break;
-        //                 case cuisine_type:
-        //                     setRestaurantList(await RestaurantService.getRestaurantsByCuisineType(selectedSearchValue));
-        //                     break;
-        //                 default:
-        //                     throw new Error('unknown search method');
-        //         };
-        //     }
-        // }, [restaurantQuery]);
+        const findRestaurants = async () => {
+            const [ borough, name, avg_rating, cuisine_type ] = config.searchMethods;
+            let restaurants;
+            switch(selectedSearchMethod) {
+                case borough:
+                    restaurants = await RestaurantService.getRestaurantsByBorough(selectedSearchValue);
+                    break;
+                case name:
+                    restaurants = await RestaurantService.getRestaurantsByName(selectedSearchValue);
+                    break;
+                case cuisine_type:
+                    restaurants = await RestaurantService.getRestaurantsByCuisineType(selectedSearchValue);
+                    break;
+                default:
+                    throw new Error('unknown search method');
+            }
+            setRestaurantList(restaurants);
+        }
 
 
 
@@ -141,7 +137,7 @@ const LandingPage = () => {
 
         const searchContent = restaurantList.length < 1 ? (
             <SearchInputList
-                clickHandler={setRestaurantQuery}
+                clickHandler={findRestaurants}
                 cuisineTypes={cuisineTypes}
                 inputs={searchInputConfig}
                 searchTerms={selectedSearchValue}
