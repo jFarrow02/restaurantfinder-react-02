@@ -1,7 +1,8 @@
-.App {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 
+.App {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto auto 50px;
+  grid-gap: 10px;
+  padding: 25px;
 }

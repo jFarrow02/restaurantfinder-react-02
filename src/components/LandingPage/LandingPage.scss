@@ -1,3 +1,4 @@
+@import '../../styles/colors';
 // .LandingPage {
 //     display: grid;
 //     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
@@ -16,3 +17,9 @@
 //     display: flex;
 //     justify-content: center;
 // }
+.LandingPage {
+    grid-column: 1 / -1;
+    grid-row: 2 / span 1;
+    background-color: $salmon;
+    color: $cornsilk;
+}

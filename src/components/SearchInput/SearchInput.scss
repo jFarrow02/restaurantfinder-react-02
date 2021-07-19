@@ -1,15 +1,31 @@
+@import '../../styles/colors';
+
 .SearchInput {
-    padding: 50px;
-    border: 1px solid gray;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto auto;
+    row-gap: 20px;
+    padding: 20px 10px;
     margin-bottom: 15px;
+    // width: 50%;
+}
+
+.SearchInput_search {
+    width: 80%;
+}
+
+.SearchInput_input, .SearchInput_label {
+    font-weight: bold;
 }
 
 .SearchInput_label {
-    margin-bottom: 15px;
+    grid-column: 1 / 13;
+    grid-row: 1 / span 1;
 }
 
 .SearchInput_input {
-    
+    grid-column: 1 / 13;
+    grid-row: 2 / span 1;
 }
 
 .input_wrapper {

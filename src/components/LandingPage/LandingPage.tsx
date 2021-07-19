@@ -7,7 +7,7 @@ import RestaurantList from '../RestaurantList/RestaurantList';
 import CuisineService from '../../services/cuisine-types-service';
 import RestaurantService from '../../services/restaurant-service';
 import config from '../../config/constants/landing-page';
-import store, { restaurantListFetchActionCreator} from '../../redux/store';
+import store, { restaurantListFetchActionCreator, cuisineTypesFetchActionCreator} from '../../redux/store';
 
 const LandingPage = () => {
     const [ selectedSearchValue, setSelectedSearchValue ] = useState<string | null >(null);
@@ -15,6 +15,7 @@ const LandingPage = () => {
     const [ cuisineTypes, setCuisineTypes ] = useState<CuisineTypeInterface[]>([]);
 
     const restaurantList = store.getState().restaurantsList;
+    const cuisineTypesStore = store.getState().cuisineTypes;
 
     const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
 
@@ -69,6 +70,7 @@ const LandingPage = () => {
                     return 0;
                 });
                 setCuisineTypes(sorted);
+                store.dispatch(cuisineTypesFetchActionCreator(sorted));
             };
             fetchCuisineTypes();
         }, []);
@@ -136,22 +138,18 @@ const LandingPage = () => {
             { name: 'search-method', value: cuisineType, labelText: 'Cuisine Type', description: 'Find Restaurants by Cuisine Type:', children: cuisineInputChildren },
         ];
 
-        const searchContent = restaurantList.length < 1 ? (
-            <SearchInputList
-                clickHandler={findRestaurants}
-                cuisineTypes={cuisineTypes}
-                inputs={searchInputConfig}
-                searchTerms={selectedSearchValue}
-                searchMethod={selectedSearchMethod}
-                onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}
-            />
-        ) : <RestaurantList restaurantList={restaurantList}/>;
         return (
             <div className='LandingPage'>
-                { searchContent }
+                <SearchInputList
+                    clickHandler={findRestaurants}
+                    cuisineTypes={cuisineTypes}
+                    inputs={searchInputConfig}
+                    searchTerms={selectedSearchValue}
+                    searchMethod={selectedSearchMethod}
+                    onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}
+                />
             </div>
-        )
-
+        );
 };
 
 export default LandingPage;
