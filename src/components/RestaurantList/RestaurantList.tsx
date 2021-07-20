@@ -13,9 +13,17 @@ const RestaurantList = () => {
 
     const restaurants = restaurantThumbnails.length > 0 ? restaurantThumbnails : <div>No restaurants found</div>
     return(
-       <div className='RestaurantList'>
-          { restaurants }
-       </div>
+       <section className='RestaurantList'>
+           <div className="RestaurantList_map">
+               <h2>MAP</h2>
+           </div>
+           <nav className="RestaurantsList_pagination">
+               <h2>PAGINATION</h2>
+           </nav>
+           <section className='RestaurantList_thumbnails'>
+             { restaurants }
+           </section>
+       </section>
     )
 };
 

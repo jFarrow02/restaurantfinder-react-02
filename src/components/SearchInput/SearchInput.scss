@@ -7,7 +7,12 @@
     row-gap: 20px;
     padding: 20px 10px;
     margin-bottom: 15px;
+    background-color: $lightblue;
     // width: 50%;
+}
+
+.SearchInput:hover {
+    background-color: $salmon;
 }
 
 .SearchInput_search {

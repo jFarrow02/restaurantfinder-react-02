@@ -1,5 +1,14 @@
+@import '../../styles/colors';
+
+
 .RestaurantThumbnail {
-    display: inline-block;
-    border: 1px solid gray;
+    width: 20%;
     padding: 20px;
+    background-color: $lightblue;
+    color: $cornsilk;
+    margin: 15px;
+}
+
+.RestaurantThumbnail:hover {
+    background-color: $salmon;
 }
