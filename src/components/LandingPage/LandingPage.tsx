@@ -13,8 +13,9 @@ const LandingPage = () => {
     const [ selectedSearchValue, setSelectedSearchValue ] = useState<string | null >(null);
     const [ selectedSearchMethod, setSelectedSearchMethod ] = useState<string | null >(null);
     const [ cuisineTypes, setCuisineTypes ] = useState<CuisineTypeInterface[]>([]);
+    // const [ restaurantList, setRestaurantList ] = useState<RestaurantInterface[]>([]);
 
-    const restaurantList = store.getState().restaurantsList;
+    // const restaurantList = store.getState().restaurantsList;
     const cuisineTypesStore = store.getState().cuisineTypes;
 
     const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
@@ -77,21 +78,24 @@ const LandingPage = () => {
 
         const findRestaurants = async () => {
             const [ borough, name, avg_rating, cuisine_type ] = config.searchMethods;
-            let restaurants;
+            let restaurants = [];
             switch(selectedSearchMethod) {
                 case borough:
                     restaurants = await RestaurantService.getRestaurantsByBorough(selectedSearchValue);
+                    console.log(restaurants);
+                    store.dispatch(restaurantListFetchActionCreator(restaurants));
                     break;
                 case name:
                     restaurants = await RestaurantService.getRestaurantsByName(selectedSearchValue);
+                    store.dispatch(restaurantListFetchActionCreator(restaurants));
                     break;
                 case cuisine_type:
                     restaurants = await RestaurantService.getRestaurantsByCuisineType(selectedSearchValue);
+                    store.dispatch(restaurantListFetchActionCreator(restaurants));
                     break;
                 default:
                     throw new Error('unknown search method');
             }
-            store.dispatch(restaurantListFetchActionCreator(restaurants));
         };
 
 
@@ -144,6 +148,7 @@ const LandingPage = () => {
                     clickHandler={findRestaurants}
                     cuisineTypes={cuisineTypes}
                     inputs={searchInputConfig}
+                    searchEnabled={selectedSearchMethod!== null}
                     searchTerms={selectedSearchValue}
                     searchMethod={selectedSearchMethod}
                     onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}

@@ -11,6 +11,7 @@ interface SearchInputListPropsInterface {
     cuisineTypes: CuisineTypeInterface[],
     searchTerms: string | null,
     onSearchMethodSelect: Function,
+    searchEnabled: boolean,
     searchMethod: string | null,
 }
 
@@ -53,7 +54,7 @@ export default class SearchInputList extends React.Component<SearchInputListProp
                 </div>
                 <div className="SearchInputList_search-controls">
                     <button
-                        // disabled={!this.state.selectedSearchMethod}
+                        disabled={!this.props.searchEnabled}
                         onClick={() => { this.props.clickHandler()}}
                         type="button"
                     >
