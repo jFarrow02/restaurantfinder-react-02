@@ -1,22 +1,17 @@
 import { useState, useEffect } from 'react';
 import './LandingPage.scss';
-import RestaurantInterface from '../../interfaces/RestaurantInterface';
 import CuisineTypeInterface from '../../interfaces/CuisineInterface';
 import SearchInputList from '../SearchInputList/SearchInputList';
-import RestaurantList from '../RestaurantList/RestaurantList';
 import CuisineService from '../../services/cuisine-types-service';
 import RestaurantService from '../../services/restaurant-service';
 import config from '../../config/constants/landing-page';
 import store, { restaurantListFetchActionCreator, cuisineTypesFetchActionCreator} from '../../redux/store';
+import RestaurantList from '../RestaurantList/RestaurantList';
 
 const LandingPage = () => {
     const [ selectedSearchValue, setSelectedSearchValue ] = useState<string | null >(null);
     const [ selectedSearchMethod, setSelectedSearchMethod ] = useState<string | null >(null);
     const [ cuisineTypes, setCuisineTypes ] = useState<CuisineTypeInterface[]>([]);
-    // const [ restaurantList, setRestaurantList ] = useState<RestaurantInterface[]>([]);
-
-    // const restaurantList = store.getState().restaurantsList;
-    const cuisineTypesStore = store.getState().cuisineTypes;
 
     const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
 
@@ -81,8 +76,7 @@ const LandingPage = () => {
             let restaurants = [];
             switch(selectedSearchMethod) {
                 case borough:
-                    restaurants = await RestaurantService.getRestaurantsByBorough(selectedSearchValue);
-                    console.log(restaurants);
+                    restaurants = await RestaurantService.getRestaurantsByBorough(selectedSearchValue)
                     store.dispatch(restaurantListFetchActionCreator(restaurants));
                     break;
                 case name:
@@ -96,6 +90,7 @@ const LandingPage = () => {
                 default:
                     throw new Error('unknown search method');
             }
+            
         };
 
 
@@ -142,17 +137,29 @@ const LandingPage = () => {
             { name: 'search-method', value: cuisineType, labelText: 'Cuisine Type', description: 'Find Restaurants by Cuisine Type:', children: cuisineInputChildren },
         ];
 
+        const content = store.getState().restaurantsList.length > 0 ? (
+            <RestaurantList restaurantList={store.getState().restaurantsList}/>
+        ) : (
+            <SearchInputList
+                        clickHandler={findRestaurants}
+                        cuisineTypes={cuisineTypes}
+                        inputs={searchInputConfig}
+                        searchEnabled={selectedSearchMethod!== null}
+                        searchTerms={selectedSearchValue}
+                        searchMethod={selectedSearchMethod}
+                        onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}
+                    />
+        );
+
         return (
             <div className='LandingPage'>
-                <SearchInputList
-                    clickHandler={findRestaurants}
-                    cuisineTypes={cuisineTypes}
-                    inputs={searchInputConfig}
-                    searchEnabled={selectedSearchMethod!== null}
-                    searchTerms={selectedSearchValue}
-                    searchMethod={selectedSearchMethod}
-                    onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}
-                />
+                <section className='LandingPage_map'>
+                    <h2>FIND RESTAURANTS BY BOROUGH</h2>
+                </section>
+                <h2 className='LandingPage_or'>OR</h2>
+                <section className='LandingPage_search-input'>
+                    {content}
+                </section>
             </div>
         );
 };

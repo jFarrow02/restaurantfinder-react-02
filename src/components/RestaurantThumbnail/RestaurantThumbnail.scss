@@ -3,10 +3,11 @@
 
 .RestaurantThumbnail {
     width: 20%;
+    min-width: 200px;
     padding: 20px;
     background-color: $lightblue;
     color: $cornsilk;
-    margin: 15px;
+    margin: 5px;
 }
 
 .RestaurantThumbnail:hover {

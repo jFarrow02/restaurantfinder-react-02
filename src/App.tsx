@@ -16,14 +16,7 @@ import {
 class App extends React.Component<{}, {}> {
 
   render() {
-    // const nav = (
-    //   <nav>
-    //     <ul>
-    //       <li><Link to="/search">Home</Link></li>
-    //       <li><Link to='/search/restaurants/results'>Restaurants</Link></li>
-    //     </ul>
-    //   </nav>
-    // );
+    
     return ( 
         <div className='App'>
            <Router>

@@ -6,8 +6,8 @@ import store from '../../redux/store';
 interface RestaurantListInterface {
     restaurantList: RestaurantInterface[],
 }
-const RestaurantList = () => {
-    const restaurantThumbnails = store.getState().restaurantsList.map((restaurant, index) => {
+const RestaurantList = (props: RestaurantListInterface) => {
+    const restaurantThumbnails = props.restaurantList.map((restaurant, index) => {
         return <RestaurantThumbnail restaurant={restaurant} key={`restaurant-thumbnail-${index}`}/>
     });
 

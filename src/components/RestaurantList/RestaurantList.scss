@@ -3,7 +3,7 @@
 .RestaurantList {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: 500px 150px auto;
+    grid-template-rows: 500px 100px auto;
     grid-column: 1 / -1;
     grid-row: 2 / span 1;
     row-gap: 15px;
@@ -12,6 +12,7 @@
 .RestaurantList_map {
     grid-column: 1 / -1;
     grid-row: 1 / span 1;
+    // grid-area: m;
     background-color: $salmon;
     color: $cornsilk;
     text-align: center;
@@ -20,6 +21,7 @@
 .RestaurantsList_pagination {
     grid-column: 1 / -1;
     grid-row: 2 / span 1;
+    // grid-area: p;
     background-color: $azul;
     color: $cornsilk;
     text-align: center;
@@ -28,6 +30,7 @@
 .RestaurantList_thumbnails {
     grid-column: 1 / -1;
     grid-row: 3 / span 1;
+    display: grid;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
