@@ -1,10 +1,10 @@
 const config = {
     boroughNames: [
-        'Brooklyn',
-        'Bronx',
-        'Manhattan',
-        'Staten Island',
-        'Queens',
+        { full: 'Brooklyn', abbr: 'BKLYN' },
+        { full: 'Bronx', abbr: 'BRONX' },
+        { full: 'Manhattan', abbr: 'MANHTN' },
+        { full: 'Staten Island', abbr: 'STNISL' },
+        { full: 'Queens', abbr: 'QUEENS' },
     ],
 
     avgGrades: [

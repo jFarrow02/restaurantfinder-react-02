@@ -5,17 +5,21 @@ import SearchInputList from '../SearchInputList/SearchInputList';
 import CuisineService from '../../services/cuisine-types-service';
 import RestaurantService from '../../services/restaurant-service';
 import config from '../../config/constants/landing-page';
-import store, { restaurantListFetchActionCreator, cuisineTypesFetchActionCreator} from '../../redux/store';
+import store, { restaurantListFetchActionCreator, cuisineTypesFetchActionCreator, searchSetActionCreator} from '../../redux/store';
+import RestaurantInterface from '../../interfaces/RestaurantInterface';
 import RestaurantList from '../RestaurantList/RestaurantList';
+import BoroughSearchButton from '../BoroughSearchButton/BoroughSearchButton';
 
-const LandingPage = () => {
+const LandingPage = (props: any) => {
     const [ selectedSearchValue, setSelectedSearchValue ] = useState<string | null >(null);
     const [ selectedSearchMethod, setSelectedSearchMethod ] = useState<string | null >(null);
     const [ cuisineTypes, setCuisineTypes ] = useState<CuisineTypeInterface[]>([]);
+    const [ restaurantsList, setRestaurantsList ] = useState<RestaurantInterface[] | null>(null);
+    // const [ showSearch, setShowSearch ] = useState<Boolean>(true);
 
     const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
 
-        const boroughList = config.boroughNames.map((borough, index)=> { return <option value={borough} selected={selectedSearchValue === borough} key={`borough-select-${index}`}>{borough}</option>});
+        const boroughList = config.boroughNames.map((borough, index)=> { return <option value={borough.full} selected={selectedSearchValue === borough.full} key={`borough-select-${index}`}>{borough.full}</option>});
         
         const gradesList = config.avgGrades.map((grade, index) => { return <option value={grade} key={`grade-select-${index}`}>{grade}</option>});
 
@@ -29,7 +33,7 @@ const LandingPage = () => {
             const [borough, name, avgRating, cuisineType] = config.searchMethods;
             switch(searchMethod) {
                 case borough:
-                    defaultValue = config.boroughNames[0];
+                    defaultValue = config.boroughNames[0].full;
                     break;
                 case name:
                     defaultValue = '';
@@ -90,10 +94,15 @@ const LandingPage = () => {
                 default:
                     throw new Error('unknown search method');
             }
-            
+            setRestaurantsList(restaurants);
+            props.hideSearchHandler(false);
         };
 
-
+        const findRestaurantsByBorough = async (boroughName: string) => {
+            const restaurants = await RestaurantService.getRestaurantsByBorough(boroughName);
+            setRestaurantsList(restaurants);
+            props.hideSearchHandler(false);
+        }
 
         const boroughInputChildren = (
             <select
@@ -131,34 +140,40 @@ const LandingPage = () => {
         );
 
         const searchInputConfig = [
-            { name: 'search-method', value: borough, labelText: 'Borough', description: 'Find Restaurants by Borough:', children: boroughInputChildren },
             { name: 'search-method', value: name, labelText: 'Name', description: 'Find Restaurant by Name:', children: nameInputChildren },
             { name: 'search-method', value: avgRating, labelText: 'Average Rating', description: 'Find Restaurants by Average Rating:', children: gradeInputChildren },
             { name: 'search-method', value: cuisineType, labelText: 'Cuisine Type', description: 'Find Restaurants by Cuisine Type:', children: cuisineInputChildren },
         ];
 
-        const content = store.getState().restaurantsList.length > 0 ? (
-            <RestaurantList restaurantList={store.getState().restaurantsList}/>
-        ) : (
+        const content = restaurantsList ? <RestaurantList restaurantList={restaurantsList} /> : <></>
+        const searchContent = props.showSearch ? (
             <SearchInputList
-                        clickHandler={findRestaurants}
-                        cuisineTypes={cuisineTypes}
-                        inputs={searchInputConfig}
-                        searchEnabled={selectedSearchMethod!== null}
-                        searchTerms={selectedSearchValue}
-                        searchMethod={selectedSearchMethod}
-                        onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}
-                    />
-        );
-
+                clickHandler={findRestaurants}
+                cuisineTypes={cuisineTypes}
+                inputs={searchInputConfig}
+                searchEnabled={selectedSearchMethod!== null}
+                searchTerms={selectedSearchValue}
+                searchMethod={selectedSearchMethod}
+                onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}
+            />
+        ) : <></>;
+        const boroughSearchButtons = config.boroughNames.map((borough, index) => {
+            return (
+                <BoroughSearchButton key={`borough-select-${index}`} searchValue={borough.full} text={borough.abbr} clickHandler={findRestaurantsByBorough}/>
+            );
+        });
         return (
             <div className='LandingPage'>
-                <section className='LandingPage_map'>
-                    <h2>FIND RESTAURANTS BY BOROUGH</h2>
+                <h2 className="LandingPage_searchby">SEARCH BY BOROUGH:</h2>
+                <section className='LandingPage_map' id='restaurant-search'>
+                  {boroughSearchButtons}
                 </section>
-                <h2 className='LandingPage_or'>OR</h2>
+                <h2 className='LandingPage_or'>OR:</h2>
                 <section className='LandingPage_search-input'>
-                    {content}
+                        {searchContent}
+                </section>
+                <section className="LandingPage_search-results">
+                    {content}   
                 </section>
             </div>
         );

@@ -1,8 +1,9 @@
 @import '../../styles/_colors.scss';
 
 .Footer {
-    grid-column: 1 / -1;
-    grid-row: 3 / 4;
+    // grid-column: 1 / -1;
+    // grid-row: 3 / 4;
+    grid-area: f;
     background-color: $goldenrod;
     color: $cornsilk;
     text-align: center;
