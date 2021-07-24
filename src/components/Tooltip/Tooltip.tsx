@@ -1,11 +1,20 @@
 import { useEffect, useState } from 'react';
 import './Tooltip.scss';
-import TooltipInterface
- from '../../interfaces/TooltipInterface';
+import TooltipInterface from '../../interfaces/TooltipInterface';
+import BoundingClientRectInterface from '../../interfaces/BoundingClientRectInterface';
 
 const Tooltip = (props: TooltipInterface) => {
 
-    const [parentPosition, setParentPosition] = useState({});
+    const [parentPosition, setParentPosition] = useState<BoundingClientRectInterface>({
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+    });
 
     const { position, text, show } = props;
 
@@ -19,7 +28,7 @@ const Tooltip = (props: TooltipInterface) => {
         setParentPosition(getIconPosition(iconSelector));
     }, []);
 
-    const setStyles = (position: any) => {
+    const setStyles = (position: BoundingClientRectInterface) => {
         const { 
             top,
             height,
