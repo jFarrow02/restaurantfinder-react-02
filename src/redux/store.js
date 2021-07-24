@@ -1,17 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 const initialState = {
-    restaurantsList: [],
+    restaurantListLocation: null,
     cuisineTypes: [],
     showSearch: true,
 };
 
-const RESTAURANTSLIST_FETCH = 'restaurantsList/fetch';
+const RESTAURANT_LIST_LOCATION_SET = 'restaurantListLocation/set';
 const CUISINETYPES_FETCH = 'cuisineTypes/fetch';
 const SET_SHOW_SEARCH = 'search/set';
 
-export const restaurantListFetchActionCreator = (payload = []) => {
-    return { type: RESTAURANTSLIST_FETCH, payload };
+export const restaurantListLocationSetActionCreator = (payload = { x: null, y: null }) => {
+    return { type: RESTAURANT_LIST_LOCATION_SET, payload };
 };
 
 export const cuisineTypesFetchActionCreator = (payload = []) => {
@@ -24,10 +24,10 @@ export const searchSetActionCreator = (payload = true) => {
 
 const appReducer = (state = initialState, action) => {
     switch(action.type) {
+        case RESTAURANT_LIST_LOCATION_SET:
+            return { ...state, restaurantListLocation: action.payload };
         case CUISINETYPES_FETCH:
             return { ...state, cuisineTypes: action.payload };
-        case RESTAURANTSLIST_FETCH:
-            return { ...state, restaurantsList: action.payload };
         case SET_SHOW_SEARCH:
             return { ...state, showSearch: action.payload };
         default:
