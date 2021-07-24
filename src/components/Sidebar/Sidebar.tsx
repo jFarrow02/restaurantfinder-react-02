@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Sidebar.scss';
 import SearchIcon from '@material-ui/icons/Search';
 import PinIcon from '@material-ui/icons/LocationOn';
@@ -31,24 +31,6 @@ const Sidebar = (props: any) => {
         }
         return false;
     }
-
-    const sortByName = (list: any[]) => {
-        // console.log('sortByName', list);
-        const sorted = list.sort((a, b):number => {
-          if(a.name < b.name) {
-            return -1;
-          }
-          if(a.name > b.name) {
-            return 1;
-          }
-          return 0;
-        });
-        // return sorted;
-        props.fetchRestaurantList(sorted);
-      };
-    // useEffect(() => {
-    //     props.fetchRestaurantList(props.restaurantList);
-    // }, [props.restaurantList]);
 
     return (
         <section className='Sidebar'>
@@ -88,7 +70,6 @@ const Sidebar = (props: any) => {
                 onMouseLeave={() => {setShowSortTooltip(false)}}
             >
                 <SortByAlpha style={iconStyle} onClick={() => {props.sortByName()}}/>
-                {/* <SortByAlpha style={iconStyle} onClick={() => {props.setIt('Bar')}}/> */}
                 <Tooltip position="left" show={showSortTooltip} text='Sort Alphabetically by Name'/>
             </span>
             <span className='Sidebar-icon'

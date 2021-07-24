@@ -13,7 +13,6 @@ interface LocationObjectInterface {
 
 const App = () => {
   const [ restaurantsList, setRestaurantsList ] = useState<RestaurantInterface[]>([]);
-  // const [ restaurantListLocation, setRestaurantListLocation ] = useState<{} | null>(null);
   const [ foo, setFoo ] = useState('');
   
   const fetchRestaurantList = (restaurantsList: []) => {
@@ -21,7 +20,6 @@ const App = () => {
   };
 
   const sortByName = () => {
-    // console.log('sortByName', list);
     const sorted = restaurantsList.sort((a, b):number => {
       if(a.name < b.name) {
         return -1;
@@ -32,11 +30,6 @@ const App = () => {
       return 0;
     });
     setRestaurantsList([...sorted]);
-    // return sorted;
-  };
-
-  const setIt = (name: string) => {
-    setFoo(name);
   };
 
   const sortByBorough = () => {
@@ -49,9 +42,7 @@ const App = () => {
       }
       return 0;
     });
-    // console.log('sorted: ', sorted); OK
-    setRestaurantsList(sorted);
-    // return sorted;
+    setRestaurantsList([...sorted]);
   };
 
   const sortByCuisineType = () => {
@@ -64,8 +55,7 @@ const App = () => {
       }
       return 0;
     });
-    setRestaurantsList(sorted);
-    // return sorted;
+    setRestaurantsList([...sorted]);
   };
 
   const scrollToLocation = (location: LocationObjectInterface) => {
@@ -79,8 +69,6 @@ const App = () => {
         <Header title={'HEADER'}/>
         <Sidebar 
           scrollToLocation={scrollToLocation}
-          // sortByName={sortByName}
-          setIt={setIt}
           sortByName={sortByName}
           sortByBorough={sortByBorough}
           sortByCuisineType={sortByCuisineType}
