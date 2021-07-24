@@ -13,3 +13,14 @@
 .RestaurantThumbnail:hover {
     background-color: $salmon;
 }
+
+span.RestaurantThumbnail-more:hover {
+    cursor: pointer;
+}
+// span.RestaurantThumbnail-more {
+//     transition: transform 2000ms ease-in-out;
+//     :hover {
+//         cursor: pointer;
+//         transform: scale(1.75, 1.75);
+//     }
+// }
