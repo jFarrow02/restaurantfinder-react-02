@@ -5,9 +5,8 @@
     background-color: $goldenrod;
     position: relative;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
   }
   
   .Sidebar-nav {
@@ -25,9 +24,12 @@
   }
 
   .Sidebar-icon {
+      position: relative;
       display: block;
-      margin-bottom: 50px;
+      height: 75px;
+      border: 2px solid $salmon;
       :hover {
           cursor: pointer;
+          color: $darkSalmon;
       }
   }
