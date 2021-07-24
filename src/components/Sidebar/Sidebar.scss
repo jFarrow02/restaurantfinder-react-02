@@ -1,0 +1,12 @@
+@import '../../styles/colors';
+
+.Sidebar {
+    grid-area: s;
+    background-color: $goldenrod;
+    position: relative;
+  }
+  
+  .Sidebar-nav {
+    position: fixed;
+    top: 50%;
+  }

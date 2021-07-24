@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, DOMElement } from 'react';
 import './LandingPage.scss';
 import CuisineTypeInterface from '../../interfaces/CuisineInterface';
 import SearchInputList from '../SearchInputList/SearchInputList';
@@ -15,7 +15,8 @@ const LandingPage = (props: any) => {
     const [ selectedSearchMethod, setSelectedSearchMethod ] = useState<string | null >(null);
     const [ cuisineTypes, setCuisineTypes ] = useState<CuisineTypeInterface[]>([]);
     const [ restaurantsList, setRestaurantsList ] = useState<RestaurantInterface[] | null>(null);
-    // const [ showSearch, setShowSearch ] = useState<Boolean>(true);
+
+    const restaurantResultsRef: any = useRef(null);
 
     const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
 
@@ -73,6 +74,7 @@ const LandingPage = (props: any) => {
                 store.dispatch(cuisineTypesFetchActionCreator(sorted));
             };
             fetchCuisineTypes();
+            
         }, []);
 
         const findRestaurants = async () => {
@@ -95,14 +97,14 @@ const LandingPage = (props: any) => {
                     throw new Error('unknown search method');
             }
             setRestaurantsList(restaurants);
-            props.hideSearchHandler(false);
+            props.scrollToLocation(restaurantResultsRef.current.getBoundingClientRect());
         };
 
         const findRestaurantsByBorough = async (boroughName: string) => {
             const restaurants = await RestaurantService.getRestaurantsByBorough(boroughName);
             setRestaurantsList(restaurants);
-            props.hideSearchHandler(false);
-        }
+            props.scrollToLocation(restaurantResultsRef.current.getBoundingClientRect());
+        };
 
         const boroughInputChildren = (
             <select
@@ -146,17 +148,7 @@ const LandingPage = (props: any) => {
         ];
 
         const content = restaurantsList ? <RestaurantList restaurantList={restaurantsList} /> : <></>
-        const searchContent = props.showSearch ? (
-            <SearchInputList
-                clickHandler={findRestaurants}
-                cuisineTypes={cuisineTypes}
-                inputs={searchInputConfig}
-                searchEnabled={selectedSearchMethod!== null}
-                searchTerms={selectedSearchValue}
-                searchMethod={selectedSearchMethod}
-                onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}
-            />
-        ) : <></>;
+        
         const boroughSearchButtons = config.boroughNames.map((borough, index) => {
             return (
                 <BoroughSearchButton key={`borough-select-${index}`} searchValue={borough.full} text={borough.abbr} clickHandler={findRestaurantsByBorough}/>
@@ -170,9 +162,17 @@ const LandingPage = (props: any) => {
                 </section>
                 <h2 className='LandingPage_or'>OR:</h2>
                 <section className='LandingPage_search-input'>
-                        {searchContent}
+                    <SearchInputList
+                        clickHandler={findRestaurants}
+                        cuisineTypes={cuisineTypes}
+                        inputs={searchInputConfig}
+                        searchEnabled={selectedSearchMethod!== null}
+                        searchTerms={selectedSearchValue}
+                        searchMethod={selectedSearchMethod}
+                        onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}
+                    />
                 </section>
-                <section className="LandingPage_search-results">
+                <section className="LandingPage_search-results" ref={restaurantResultsRef}>
                     {content}   
                 </section>
             </div>
