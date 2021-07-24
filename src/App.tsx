@@ -13,13 +13,15 @@ interface LocationObjectInterface {
 
 const App = () => {
   const [ restaurantsList, setRestaurantsList ] = useState<RestaurantInterface[]>([]);
-  const [ restaurantListLocation, setRestaurantListLocation ] = useState<{} | null>(null);
+  // const [ restaurantListLocation, setRestaurantListLocation ] = useState<{} | null>(null);
+  const [ foo, setFoo ] = useState('');
   
   const fetchRestaurantList = (restaurantsList: []) => {
     setRestaurantsList(restaurantsList);
   };
 
   const sortByName = () => {
+    // console.log('sortByName', list);
     const sorted = restaurantsList.sort((a, b):number => {
       if(a.name < b.name) {
         return -1;
@@ -29,7 +31,12 @@ const App = () => {
       }
       return 0;
     });
-    setRestaurantsList(sorted);
+    setRestaurantsList([...sorted]);
+    // return sorted;
+  };
+
+  const setIt = (name: string) => {
+    setFoo(name);
   };
 
   const sortByBorough = () => {
@@ -42,7 +49,9 @@ const App = () => {
       }
       return 0;
     });
+    // console.log('sorted: ', sorted); OK
     setRestaurantsList(sorted);
+    // return sorted;
   };
 
   const sortByCuisineType = () => {
@@ -56,6 +65,7 @@ const App = () => {
       return 0;
     });
     setRestaurantsList(sorted);
+    // return sorted;
   };
 
   const scrollToLocation = (location: LocationObjectInterface) => {
@@ -64,24 +74,24 @@ const App = () => {
     window.scrollTo({ top: y, left: x, behavior: 'smooth'}); 
   };
 
-  const setRestaurantLocation = (location: {}) => {
-    console.log('location:', location);
-    // setRestaurantListLocation(location);
-  }
   return ( 
     <div className='App'>
         <Header title={'HEADER'}/>
         <Sidebar 
           scrollToLocation={scrollToLocation}
+          // sortByName={sortByName}
+          setIt={setIt}
           sortByName={sortByName}
           sortByBorough={sortByBorough}
           sortByCuisineType={sortByCuisineType}
+          fetchRestaurantList={fetchRestaurantList}
+          restaurantList={restaurantsList}
         />
         <LandingPage 
           scrollToLocation={scrollToLocation}
           fetchRestaurantList={fetchRestaurantList}
           restaurantsList={restaurantsList}
-          setRestaurantListLocation={setRestaurantLocation}
+          foo={foo}
         />
         <Footer title={'FOOTER'}/>
     </div>

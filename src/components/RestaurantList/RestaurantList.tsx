@@ -15,7 +15,7 @@ const RestaurantList = (props: RestaurantListInterface) => {
                <h2>MAP</h2>
            </div>
            <nav className="RestaurantsList_pagination" id='pagination'>
-               <h2>PAGINATION</h2>
+            <h2>FOO: {props.foo}</h2>
            </nav>
            <section className='RestaurantList_thumbnails' id='restaurant-thumbnails'>
              { restaurants }

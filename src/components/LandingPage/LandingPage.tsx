@@ -14,15 +14,16 @@ interface LandingPagePropsInterface {
     restaurantsList: RestaurantInterface[],
     fetchRestaurantList: Function,
     scrollToLocation: Function,
-    setRestaurantListLocation: Function,
+    foo:string,
 }
 
 const LandingPage = (props: LandingPagePropsInterface) => {
     const [ selectedSearchValue, setSelectedSearchValue ] = useState<string | null >(null);
     const [ selectedSearchMethod, setSelectedSearchMethod ] = useState<string | null >(null);
     const [ cuisineTypes, setCuisineTypes ] = useState<CuisineTypeInterface[]>([]);
+    // const [ restContent, setRestContent ] = useState<RestaurantInterface[]>([]);
 
-    const [ name, avgRating, cuisineType ] = config.searchMethods;
+    const [ borough, name, avgRating, cuisineType ] = config.searchMethods;
 
         const boroughList = config.boroughNames.map((borough, index)=> { return <option value={borough.full} selected={selectedSearchValue === borough.full} key={`borough-select-${index}`}>{borough.full}</option>});
         
@@ -81,6 +82,10 @@ const LandingPage = (props: LandingPagePropsInterface) => {
             
         }, []);
 
+        // useEffect(() => {
+        //     setRestContent(props.restaurantsList);
+        // }, props.restaurantsList);
+
         const findRestaurants = async () => {
             const [ borough, name, avg_rating, cuisine_type ] = config.searchMethods;
             let restaurants = [];
@@ -98,12 +103,14 @@ const LandingPage = (props: LandingPagePropsInterface) => {
                     throw new Error('unknown search method');
             }
             props.fetchRestaurantList(restaurants);
+            // setRestContent(props.restaurantsList);
             props.scrollToLocation(document.querySelector('#restaurant-thumbnails')?.getBoundingClientRect());
         };
 
         const findRestaurantsByBorough = async (boroughName: string) => {
             const restaurants = await RestaurantService.getRestaurantsByBorough(boroughName);
             props.fetchRestaurantList(restaurants);
+            // setRestContent(props.restaurantsList);
             props.scrollToLocation(document.querySelector('#restaurant-thumbnails')?.getBoundingClientRect());
         };
 
@@ -138,7 +145,8 @@ const LandingPage = (props: LandingPagePropsInterface) => {
             { name: 'search-method', value: cuisineType, labelText: 'Cuisine Type', description: 'Find Restaurants by Cuisine Type:', children: cuisineInputChildren },
         ];
 
-        const content = props.restaurantsList.length > 0 ? <RestaurantList restaurantList={props.restaurantsList} /> : <></>
+        const content = props.restaurantsList.length > 0 ? <RestaurantList foo={props.foo} restaurantList={props.restaurantsList} /> : <></>
+        // const content = restContent.length > 0 ? <RestaurantList restaurantList={restContent}/> : <></>;
         
         const boroughSearchButtons = config.boroughNames.map((borough, index) => {
             return (
