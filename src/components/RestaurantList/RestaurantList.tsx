@@ -3,35 +3,6 @@ import RestaurantListInterface from '../../interfaces/RestaurantListInterface';
 import RestaurantInterface from '../../interfaces/RestaurantInterface';
 import RestaurantThumbnail from '../RestaurantThumbnail/RestaurantThumbnail';
 
-interface PaginatedRestaurantsInterface {
-    // a: RestaurantInterface[],
-    // b: RestaurantInterface[],
-    // c: RestaurantInterface[],
-    // d: RestaurantInterface[],
-    // e: RestaurantInterface[],
-    // f: RestaurantInterface[],
-    // g: RestaurantInterface[],
-    // h: RestaurantInterface[],
-    // i: RestaurantInterface[],
-    // j: RestaurantInterface[],
-    // k: RestaurantInterface[], 
-    // l: RestaurantInterface[],
-    // m: RestaurantInterface[],
-    // n: RestaurantInterface[],
-    // o: RestaurantInterface[],
-    // p: RestaurantInterface[],
-    // q: RestaurantInterface[],
-    // r: RestaurantInterface[],
-    // s: RestaurantInterface[],
-    // t: RestaurantInterface[],
-    // u: RestaurantInterface[],
-    // v: RestaurantInterface[],
-    // w: RestaurantInterface[],
-    // x: RestaurantInterface[],
-    // y: RestaurantInterface[],
-    // z: RestaurantInterface[],
-    // special: RestaurantInterface[],
-}
 const RestaurantList = (props: RestaurantListInterface) => {
 
     const restaurantThumbnails = props.restaurantList.map((restaurant, index) => {
