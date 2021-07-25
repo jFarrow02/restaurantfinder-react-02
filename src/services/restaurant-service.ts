@@ -17,6 +17,12 @@ const RestaurantService = {
             .then(res => res.data);
     },
 
+    async getRestaurantsByAvgRating(avgRating: any): Promise<RestaurantInterface[]> {
+        const restaurants = await fetch(`${SERVER_URI}/find/avg_grade/${encodeURIComponent(avgRating)}`);
+        return restaurants.json()
+            .then(res => res.data);
+    },
+
     async getRestaurantsByName(name: any): Promise<RestaurantInterface[]> {
         const restaurants = await fetch(`${SERVER_URI}/find/name/${name}`);
         return restaurants.json()

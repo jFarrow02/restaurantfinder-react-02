@@ -82,10 +82,6 @@ const LandingPage = (props: LandingPagePropsInterface) => {
             
         }, []);
 
-        // useEffect(() => {
-        //     setRestContent(props.restaurantsList);
-        // }, props.restaurantsList);
-
         const findRestaurants = async () => {
             const [ borough, name, avg_rating, cuisine_type ] = config.searchMethods;
             let restaurants = [];
@@ -99,18 +95,19 @@ const LandingPage = (props: LandingPagePropsInterface) => {
                 case cuisine_type:
                     restaurants = await RestaurantService.getRestaurantsByCuisineType(selectedSearchValue);
                     break;
+                case avg_rating:
+                    restaurants = await RestaurantService.getRestaurantsByAvgRating(selectedSearchValue);
+                    break;
                 default:
                     throw new Error('unknown search method');
             }
             props.fetchRestaurantList(restaurants);
-            // setRestContent(props.restaurantsList);
             props.scrollToLocation(document.querySelector('#restaurant-thumbnails')?.getBoundingClientRect());
         };
 
         const findRestaurantsByBorough = async (boroughName: string) => {
             const restaurants = await RestaurantService.getRestaurantsByBorough(boroughName);
             props.fetchRestaurantList(restaurants);
-            // setRestContent(props.restaurantsList);
             props.scrollToLocation(document.querySelector('#restaurant-thumbnails')?.getBoundingClientRect());
         };
 
@@ -145,8 +142,7 @@ const LandingPage = (props: LandingPagePropsInterface) => {
             { name: 'search-method', value: cuisineType, labelText: 'Cuisine Type', description: 'Find Restaurants by Cuisine Type:', children: cuisineInputChildren },
         ];
 
-        const content = props.restaurantsList.length > 0 ? <RestaurantList foo={props.foo} restaurantList={props.restaurantsList} /> : <></>
-        // const content = restContent.length > 0 ? <RestaurantList restaurantList={restContent}/> : <></>;
+        const content = props.restaurantsList.length > 0 ? <RestaurantList restaurantList={props.restaurantsList} /> : <></>
         
         const boroughSearchButtons = config.boroughNames.map((borough, index) => {
             return (
@@ -170,6 +166,9 @@ const LandingPage = (props: LandingPagePropsInterface) => {
                         searchMethod={selectedSearchMethod}
                         onSearchMethodSelect={setSelectedSearchMethodAndDefaultValue}
                     />
+                </section>
+                <section className="LandingPage_filler-content">
+                    <h2>SOME FILLER CONTENT TO GO HERE</h2>
                 </section>
                 <section className="LandingPage_search-results">
                     {content}   

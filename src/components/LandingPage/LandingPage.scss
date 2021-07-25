@@ -6,18 +6,20 @@
     color: $cornsilk;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto 300px 75px auto auto;
+    grid-template-rows: auto auto auto auto auto;
+    grid-gap: 15px;
 }
 
-.LandingPage_searchby {
+.LandingPage_searchby { /*row 1*/
     grid-row: 1 / span 1;
-    grid-column: 1 / -1;
+    grid-column: 1 / span 6;
     background-color: $salmon;
     text-align: center;
 }
-.LandingPage_map{
-    grid-column: 1 / -1;
+
+.LandingPage_map { /*row 2*/
     grid-row: 2 / span 1;
+    grid-column: 1 / span 6;
     text-align: center;
     display: grid;
     grid-column-gap: 15px;
@@ -53,18 +55,25 @@
 }
 
 .LandingPage_or {
-    grid-column: 1 / -1;
-    grid-row: 3 / span 1;
+    grid-column: 7 / -1;
+    grid-row: 1 / span 1;
     background-color: $goldenrod;
     text-align: center;
 }
 
 .LandingPage_search-input {
-    grid-column: 1 / -1;
-    grid-row: 4 / span 1;
+    grid-column: 7 / -1;
+    grid-row: 2 / span 1;
 }
 
-.LandingPage_search-results {
+.LandingPage_filler-content{ /**row3**/
+    grid-row: 3 / span 1;
     grid-column: 1 / -1;
-    grid-row: 5 / span 1;
+    background-color: $azul;
+    text-align: center;
+}
+
+.LandingPage_search-results { /**row 4**/
+    grid-column: 1 / -1;
+    grid-row: 4 / span 1;
 }

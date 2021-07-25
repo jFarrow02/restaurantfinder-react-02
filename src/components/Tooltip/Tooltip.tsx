@@ -18,14 +18,14 @@ const Tooltip = (props: TooltipInterface) => {
 
     const { position, text, show } = props;
 
-    const getIconPosition = (selector: string):any => {
-        return document.querySelector(selector)?.getBoundingClientRect();
+    const getIconPosition = ():any => {
+        return document.querySelector(props.selector)?.getBoundingClientRect();
       };
   
-      const iconSelector = 'span.Sidebar-icon';
+      // const iconSelector = 'span.Sidebar-icon';
 
     useEffect(() => {
-        setParentPosition(getIconPosition(iconSelector));
+        setParentPosition(getIconPosition());
     }, []);
 
     const setStyles = (position: BoundingClientRectInterface) => {
@@ -42,7 +42,6 @@ const Tooltip = (props: TooltipInterface) => {
         return {
             top: 0 + 'px',
             right: (width + 15) + 'px',
-            width: '150px',
         };
     }
 

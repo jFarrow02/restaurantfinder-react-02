@@ -17,13 +17,13 @@ const SearchInput = (props: SearchInputInterface) => {
         <div className="SearchInput">
             <div className="SearchInput_label">
                 <label>
-                    {description}
                     <input
                         type="radio"
                         name={name}
                         value={value}
                         onClick={() => {onClick()}}
                     />
+                    {description}
                 </label>
             </div>
             <div className="SearchInput_input">
