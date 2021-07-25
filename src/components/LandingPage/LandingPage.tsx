@@ -7,6 +7,7 @@ import RestaurantService from '../../services/restaurant-service';
 import config from '../../config/constants/landing-page';
 import store, { cuisineTypesFetchActionCreator } from '../../redux/store';
 import RestaurantList from '../RestaurantList/RestaurantList';
+import PaginatedRestaurantList from '../Pagination/PaginatedRestaurantList';
 import BoroughSearchButton from '../BoroughSearchButton/BoroughSearchButton';
 import RestaurantInterface from '../../interfaces/RestaurantInterface';
 
@@ -102,7 +103,8 @@ const LandingPage = (props: LandingPagePropsInterface) => {
                     throw new Error('unknown search method');
             }
             props.fetchRestaurantList(restaurants);
-            props.scrollToLocation(document.querySelector('#restaurant-thumbnails')?.getBoundingClientRect());
+            // props.scrollToLocation(document.querySelector('#restaurant-thumbnails')?.getBoundingClientRect());
+            props.scrollToLocation(document.querySelector('.Paginated')?.getBoundingClientRect());
         };
 
         const findRestaurantsByBorough = async (boroughName: string) => {
@@ -142,7 +144,8 @@ const LandingPage = (props: LandingPagePropsInterface) => {
             { name: 'search-method', value: cuisineType, labelText: 'Cuisine Type', description: 'Find Restaurants by Cuisine Type:', children: cuisineInputChildren },
         ];
 
-        const content = props.restaurantsList.length > 0 ? <RestaurantList restaurantList={props.restaurantsList} /> : <></>
+        // const content = props.restaurantsList.length > 0 ? <RestaurantList restaurantList={props.restaurantsList} /> : <></>
+        const content = props.restaurantsList.length > 0 ? <PaginatedRestaurantList restaurantList={props.restaurantsList} /> : <></>
         
         const boroughSearchButtons = config.boroughNames.map((borough, index) => {
             return (

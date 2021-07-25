@@ -34,24 +34,6 @@ interface PaginatedRestaurantsInterface {
 }
 const RestaurantList = (props: RestaurantListInterface) => {
 
-    const paginateRestaurants = (restaurants: RestaurantInterface[]): any => {
-        const propertyNames = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g',
-            'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-            'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'special'
-        ];
-        const paginated: { [key: string]: RestaurantInterface[]} = {};
-        propertyNames.forEach((name) => { paginated[name] = []; });
-        const keys = Object.keys(paginated);
-        restaurants.forEach((restaurant, idx) => {
-            const { name } = restaurant;
-            if(name.length > 0) { // Filter out restaurant with no 'name' attributed
-                const initial = name.charAt(0).toLowerCase();
-                const index = keys.indexOf(initial) !== -1 ? initial : 'special';
-                paginated[index].push(restaurant);
-            }
-        })
-        return paginated;
-    };
     const restaurantThumbnails = props.restaurantList.map((restaurant, index) => {
         return <RestaurantThumbnail restaurant={restaurant} key={`restaurant-thumbnail-${index}`}/>
     });

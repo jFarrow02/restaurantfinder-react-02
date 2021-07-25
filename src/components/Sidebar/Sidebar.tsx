@@ -55,7 +55,7 @@ const Sidebar = (props: any) => {
                 onMouseEnter={() => {setShowListTooltip(true)}}
                 onMouseLeave={() => {setShowListTooltip(false)}}
             >
-                <ListIcon style={iconStyle} onClick={() => {props.scrollToLocation(getElementLocation('#restaurant-thumbnails'))}}/>
+                <ListIcon style={iconStyle} onClick={() => {props.scrollToLocation(getElementLocation('.Pagination'))}}/>
                 <Tooltip position="left" show={showListTooltip} text='Back to Restaurants List' selector='.Sidebar-icon'/>
             </div>
             <div className='Sidebar-icon'
